@@ -1,2 +1,10 @@
 bin
 obj
+*.db
+appsettings.json
+.DS_Store
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
