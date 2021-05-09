@@ -11,6 +11,7 @@ namespace Persistance
         }
 
         public DbSet<Value> Values { get; set; }
+        public DbSet<Trip> Trip { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -20,7 +21,8 @@ namespace Persistance
                     new Value { Id = 1, Name = "Value 101"},
                     new Value { Id = 2, Name = "Value 102" },
                     new Value { Id = 3, Name = "Value 103" }
-                ); 
+                );
+            
         }
     }
 }
