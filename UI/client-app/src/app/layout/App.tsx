@@ -45,7 +45,8 @@ function handleCreateOrEditTrip(trip: Trip){
       setSelectedTrip(trip);
       setEditMode(false);
       setSubmitting(false);
-    })}else {
+    })} 
+    else {
       trip.id = 0
       agent.Trips.create(trip);
       setTrips([...trips, trip]);
@@ -55,7 +56,13 @@ function handleCreateOrEditTrip(trip: Trip){
 }
 
 function handleDeleteTrip(id: number){
-  setTrips([...trips.filter(x => x.id !== id)]);
+  setSubmitting(true);
+  agent.Trips.delete(id).then(() => {
+    setTrips([...trips.filter(x => x.id !== id)]);
+    setEditMode(false);
+    setSubmitting(false);
+  }
+  )
 }
 
 
