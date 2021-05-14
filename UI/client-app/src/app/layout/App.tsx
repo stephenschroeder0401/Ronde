@@ -5,8 +5,12 @@ import NavBar from './NavBar';
 import TripDashboard from '../../features/trips/dashboard/TripsDashboard';
 import agent from '../api/agent';
 import { updateFunctionTypeNode } from 'typescript';
+import { useStore } from '../stores/store';
 
 function App() {
+
+  const {activityStore} = useStore();
+
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTrip, setSelectedTrip] = useState<Trip | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
@@ -70,6 +74,7 @@ return (
     <>
       <NavBar openForm={handleFormOpen}/>
       <Container style={{marginTop: '7em'}}>
+        <h2>{activityStore.title}</h2>
         <TripDashboard 
           trips={trips}
           selectedTrip={selectedTrip}
