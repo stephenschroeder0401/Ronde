@@ -1,37 +1,32 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useEffect } from 'react';
 import { Grid} from 'semantic-ui-react';
-import { Trip } from '../../../app/models/trip';
-import TripForm from './form/TripForm';
-import TripDetails from './TripDetails';
+import LoadingComponent from '../../../app/layout/LoadingComponents';
+import { useStore } from '../../../app/stores/store';
 import TripList from './TripList';
 
+export default observer (function TripDashboard(){
 
-interface Props {
-    trips: Trip[];
-    selectedTrip: Trip | undefined;
-    selectTrip: (id: number) => void;
-    cancelSelectTrip: () => void;
-    editMode: boolean;
-    openForm: (id: number) => void;
-    closeForm: () => void;
-    createOrEdit: (trip: Trip) => void;
-    deleteTrip: (id: number) => void;
-    submitting: boolean;
-}
+    const {tripStore} = useStore();
+    const {loadTrips, tripRegistry} = tripStore;
 
-export default function TripDashboard({trips, selectedTrip, editMode, openForm, closeForm,
-    selectTrip, cancelSelectTrip, createOrEdit, submitting, deleteTrip}: Props){
+    useEffect(() =>{
+      if(tripRegistry.size <= 1) loadTrips();
+  },[tripRegistry.size]);
+  
+  
+  if(tripStore.loadingInitial) return <LoadingComponent inverted={true} content='Loading app'/>
+    
+    const {selectedTrip, editMode} = tripStore;
+
     return(
         <Grid>
             <Grid.Column width='10'>
-               <TripList trips={trips} selectTrip={selectTrip} deleteTrip={deleteTrip}/>
+               <TripList/>
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedTrip && !editMode &&
-               <TripDetails trip = {selectedTrip} cancelSelectTrip={cancelSelectTrip} openForm={openForm}/>}
-               {editMode &&
-               <TripForm selectedTrip={selectedTrip} closeForm={closeForm} createOrEdit={createOrEdit} submitting={submitting}></TripForm>}
+               <h2>Trip filters</h2>
             </Grid.Column>
         </Grid>
     )
-}
+})

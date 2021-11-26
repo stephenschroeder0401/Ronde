@@ -1,20 +1,28 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { SyntheticEvent, useState } from 'react';
 import react from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Item, ItemExtra, Segment, Label} from 'semantic-ui-react';
 import { Trip } from '../../../app/models/trip';
+import { useStore } from '../../../app/stores/store';
 
 
-interface Props{
-    trips: Trip[];
-    selectTrip: (id: number) => void;
-    deleteTrip: (id: number) => void;
+export default observer(function TripList(){
+
+    const {tripStore} = useStore();
+    const {deleteTrip, tripsByDate, loading}  = tripStore;
+
+    const [target, setTarget] = useState('');
+
+    function handleTripDelete(e: SyntheticEvent<HTMLButtonElement>, id:number){
+        setTarget(e.currentTarget.name);
+        deleteTrip(id);
     }
 
-export default function TripList({trips, selectTrip, deleteTrip}: Props){
     return (
        <Segment>
            <Item.Group divided>
-               {trips.map( trip => (
+               {tripsByDate.map( trip => (
                    <Item key={trip.id}>
                        <Item.Content>
                            <Item.Header as='a'> {trip.title} </Item.Header>
@@ -26,8 +34,8 @@ export default function TripList({trips, selectTrip, deleteTrip}: Props){
                                <div>{trip.venue}</div>
                            </Item.Description>
                            <ItemExtra>
-                                <Button onClick={() => selectTrip(trip.id)} floated='right' content="View" color="blue"/>
-                                <Button onClick={() => deleteTrip(trip.id)} floated='right' content="Delete" color="red"/>
+                                <Button as={Link} to={`/trips/${trip.id}`}  floated='right' content="View" color="blue"/>
+                                <Button onClick={(e) =>handleTripDelete(e, trip.id)} name={trip.id} loading={loading && parseInt(target) === trip.id} floated='right' content="Delete" color="red"/>
                                 <Label basic content = {trip.category} />
                            </ItemExtra>
                        </Item.Content>
@@ -38,4 +46,4 @@ export default function TripList({trips, selectTrip, deleteTrip}: Props){
        </Segment>
     )
 
-}
+})

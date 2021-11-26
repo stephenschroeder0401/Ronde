@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Handlers
 {
-    public class TripCommandHandler : IRequestHandler<TripCommand>
+    public class TripCommandHandler : IRequestHandler<TripCommand, int>
     {
         public RondeContext _context;
         public IMapper _mapper;
@@ -21,14 +21,14 @@ namespace Application.Handlers
             _context = context;
             _mapper = mapper;
         }
-        public async Task<Unit> Handle(TripCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(TripCommand request, CancellationToken cancellationToken)
         {
             var trip = request.Trip;
 
             return trip.Id == 0 ? AddTrip(trip).Result : EditTrip(trip).Result;
         }
 
-        private async Task<Unit> EditTrip(Trip updatedTrip)
+        private async Task<int> EditTrip(Trip updatedTrip)
         {
             var trip = await _context.Trip.FindAsync(updatedTrip.Id);
 
@@ -36,17 +36,17 @@ namespace Application.Handlers
 
             await _context.SaveChangesAsync();
 
-            return Unit.Value;
+            return trip.Id;
 
         }
 
-        private async Task<Unit> AddTrip(Trip trip)
+        private async Task<int> AddTrip(Trip trip)
         {
             _context.Trip.Add(trip);
 
             await _context.SaveChangesAsync();
 
-            return Unit.Value;
+            return trip.Id;
 
         }
     }

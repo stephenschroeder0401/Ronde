@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Application.Commands
 {
-    public class TripCommand : IRequest
+    public class TripCommand : IRequest<int>
     {
         public Trip Trip { get; set; }
     }

@@ -30,9 +30,9 @@ const requests = {
 
 const Trips = {
     list: () => requests.get<Trip[]>('/trips'),
-    details: (id: number) => requests.get<Trip>(`/trip/${id}`),
-    create: (trip: Trip) => axios.post<void>('/trips', trip),
-    update: (trip: Trip) => axios.put<void>(`/trips/${trip.id}`, trip),
+    details: (id: number) => requests.get<Trip>(`/trips/${id}`),
+    create: (trip: Trip) => axios.post<number>('/trips', trip),
+    update: (trip: Trip) => axios.put<number>(`/trips/${trip.id}`, trip),
     delete: (id: number) => axios.delete<void>(`/trips/${id}`)
 }
 
