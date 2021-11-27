@@ -8,7 +8,7 @@ import LoadingComponent from './LoadingComponents';
 import { Route, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import TripForm from '../../features/trips/dashboard/form/TripForm';
-import TripDetails from '../../features/trips/dashboard/TripDetails';
+import TripDetails from '../../features/trips/details/TripDetails';
 
 function App() {
   const location = useLocation();
@@ -17,7 +17,7 @@ return (
     <>
       <Route exact path='/' component={HomePage}/>
       <Route
-        path={'/(.*)'}
+        exact path={'/(.*)'}
         render={() => (
           <>
             <NavBar/>

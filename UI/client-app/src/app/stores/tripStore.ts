@@ -20,6 +20,16 @@ export default class TripStore{
         return Array.from(this.tripRegistry.values()).sort((a, b) => a.startDate.valueOf() - b.startDate.valueOf());
     }
 
+    get groupedTrips(){
+        return Object.entries(
+            this.tripsByDate.reduce((trips, trip) =>{
+                const date = new Date(trip.startDate).toDateString();
+                trips[date] = trips[date] ? [...trips[date], trip] : [trip];
+                return trips;
+            }, {} as {[key: string]: Trip[]})
+        )
+    }
+
     loadTrips = async () => {
         this.setLoadingInitial(true);
         try{
