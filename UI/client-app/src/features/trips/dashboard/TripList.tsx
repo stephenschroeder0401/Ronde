@@ -1,9 +1,6 @@
 import { observer } from 'mobx-react-lite';
-import React, { Fragment, SyntheticEvent, useState } from 'react';
-import react from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Item, ItemExtra, Segment, Label, Header} from 'semantic-ui-react';
-import { Trip } from '../../../app/models/trip';
+import { Fragment } from 'react';
+import { Header} from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 import TripListItem from './TripListItem';
 

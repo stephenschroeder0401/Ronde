@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Core;
 using Application.Queries;
 using Domain;
 using MediatR;
@@ -11,17 +12,17 @@ using Persistance;
 
 namespace Application.Handlers
 {
-    public class Handler : IRequestHandler<TripsQuery, List<Trip>>
+    public class TripsQueryHandler : IRequestHandler<TripsQuery, Result<List<Trip>>>
     {
         private readonly RondeContext _context;
-        public Handler(RondeContext context)
+        public TripsQueryHandler(RondeContext context)
         {
             _context = context;
         }
     
-        public async Task<List<Trip>> Handle(TripsQuery request, CancellationToken ct)
+        public async Task<Result<List<Trip>>> Handle(TripsQuery request, CancellationToken ct)
         {
-            return await _context.Trip.ToListAsync();
+            return Result<List<Trip>>.Success(await _context.Trip.ToListAsync(ct));
         }
     }
 }

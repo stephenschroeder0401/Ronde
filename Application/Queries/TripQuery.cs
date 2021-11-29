@@ -1,12 +1,11 @@
-﻿using Domain;
+﻿using Application.Core;
+using Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace Application.Queries
 {
-    public class TripQuery : IRequest<Trip>
+    public class TripQuery : IRequest<Result<Trip>>
     {
         public int Id { get; set; }
     }

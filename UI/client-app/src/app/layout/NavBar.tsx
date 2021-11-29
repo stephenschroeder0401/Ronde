@@ -12,6 +12,7 @@ export default function NavBar(){
                     Ronde
                </Menu.Item>
                <Menu.Item as={NavLink} to='/trips' name="Trips"/>
+               <Menu.Item as={NavLink} to='/errors' name="Errors"/>
                <Menu.Item>
                    <Button as={NavLink} to='/createTrip' positive content="Create Trip"></Button>
                </Menu.Item>
