@@ -1,5 +1,7 @@
 ﻿using Application.Core;
 using Application.Handlers;
+using Application.Interfaces;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +23,27 @@ namespace API.Extensions
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                 {
+                   new OpenApiSecurityScheme
+                   {
+                     Reference = new OpenApiReference
+                     {
+                       Type = ReferenceType.SecurityScheme,
+                       Id = "Bearer"
+                     }
+                    },
+                    new string[] { }
+                  }
+                });
             });
             services.AddDbContext<RondeContext>(opt =>
             {
@@ -35,6 +58,7 @@ namespace API.Extensions
             });
             services.AddMediatR(typeof(TripQueryHandler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }

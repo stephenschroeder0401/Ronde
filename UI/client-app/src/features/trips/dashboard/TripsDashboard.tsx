@@ -18,7 +18,7 @@ export default observer (function TripDashboard(){
   },[tripRegistry.size]);
   
   
-  if(tripStore.loadingInitial) return <LoadingComponent inverted={true} content='Loading app'/>
+  if(tripStore.loadingInitial) return <LoadingComponent inverted={true} content='Loading trips...'/>
     
     const {selectedTrip, editMode} = tripStore;
 

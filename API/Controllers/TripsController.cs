@@ -7,6 +7,7 @@ using Application.Commands;
 using Application.Handlers;
 using Application.Queries;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -25,19 +26,20 @@ namespace API.Controllers
         // GET api/values/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
-        { 
+        {
             return HandleResult(await Mediator.Send(new TripQuery { Id = id }));
         }
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> CreateTrip (Trip trip)
+        public async Task<IActionResult> CreateTrip(Trip trip)
         {
             return HandleResult(await Mediator.Send(new TripCommand { Trip = trip }));
 
         }
 
         // PUT api/values/5
+        [Authorize(Policy = "IsTripHost")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditTrip(int id, Trip trip)
         {
@@ -46,10 +48,17 @@ namespace API.Controllers
         }
 
         // DELETE api/values/5
+        [Authorize(Policy = "IsTripHost")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrip(int id)
         {
             return HandleResult(await Mediator.Send(new DeleteTripCommand { Id = id }));
+        }
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(int id)
+        {
+            return HandleResult(await Mediator.Send(new AttendanceCommand { Id = id }));
         }
     }
 }

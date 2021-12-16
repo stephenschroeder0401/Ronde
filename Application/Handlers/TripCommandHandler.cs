@@ -1,8 +1,10 @@
 ﻿using Application.Commands;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistance;
 using System;
 using System.Collections.Generic;
@@ -14,16 +16,19 @@ namespace Application.Handlers
 {
     public class TripCommandHandler : IRequestHandler<TripCommand, Result<int>>
     {
-        public RondeContext _context;
-        public IMapper _mapper;
+        private readonly RondeContext _context;
+        private readonly IMapper _mapper;
+        private readonly IUserAccessor _userAccessor;
 
-        public TripCommandHandler(RondeContext context, IMapper mapper)
+        public TripCommandHandler(RondeContext context, IMapper mapper, IUserAccessor userAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _userAccessor = userAccessor;
         }
         public async Task<Result<int>> Handle(TripCommand request, CancellationToken cancellationToken)
         {
+
             var trip = request.Trip;
 
             return trip.Id == 0 ? AddTrip(trip).Result : EditTrip(trip).Result;
@@ -47,6 +52,18 @@ namespace Application.Handlers
 
         private async Task<Result<int>> AddTrip(Trip trip)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(x =>
+              x.UserName == _userAccessor.GetUsername());
+
+            var attendee = new TripAttendee
+            {
+                AppUser = user,
+                Trip = trip,
+                IsHost = true
+            };
+
+            trip.Attendees.Add(attendee);
+
             _context.Trip.Add(trip);
 
             var result = await _context.SaveChangesAsync() > 0;

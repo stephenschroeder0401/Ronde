@@ -1,25 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Application;
-using Persistance;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MediatR;
 using Application.Handlers;
-using Application.Core;
 using API.Extensions;
 using FluentValidation.AspNetCore;
 using API.Middleware;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace API
 {
@@ -35,11 +26,17 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers().AddFluentValidation(config => {
+            services.AddControllers(opt => 
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            }).AddFluentValidation(config => {
                 config.RegisterValidatorsFromAssemblyContaining<TripCommandHandler>();
             });
             
             services.AddApplicationServices(_configuration);
+
+            services.AddIdentityServices(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +48,7 @@ namespace API
             {
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+               
             }
 
             //app.UseHttpsRedirection();
@@ -59,6 +57,7 @@ namespace API
 
             app.UseCors("CorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

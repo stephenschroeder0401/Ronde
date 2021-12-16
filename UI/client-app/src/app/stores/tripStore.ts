@@ -1,6 +1,7 @@
 import { action, makeAutoObservable, makeObservable, observable, runInAction} from "mobx";
 import agent from "../api/agent";
 import { Trip } from "../models/trip";
+import {format} from "date-fns";
 
 
 export default class TripStore{
@@ -17,13 +18,13 @@ export default class TripStore{
     }
 
     get tripsByDate(){
-        return Array.from(this.tripRegistry.values()).sort((a, b) => a.startDate.valueOf() - b.startDate.valueOf());
+        return Array.from(this.tripRegistry.values()).sort((a, b) => a.startDate!.valueOf() - b.startDate!.valueOf());
     }
 
     get groupedTrips(){
         return Object.entries(
             this.tripsByDate.reduce((trips, trip) =>{
-                const date = new Date(trip.startDate).toDateString();
+                const date = format(trip.startDate!, 'dd MMM yyyy');
                 trips[date] = trips[date] ? [...trips[date], trip] : [trip];
                 return trips;
             }, {} as {[key: string]: Trip[]})
@@ -47,6 +48,8 @@ export default class TripStore{
     }
 
     private setTrip = (trip: Trip) =>{
+        trip.startDate = new Date(trip.startDate!);
+        trip.endDate = new Date(trip.endDate!);
         this.tripRegistry.set(trip.id, trip);
     }
 

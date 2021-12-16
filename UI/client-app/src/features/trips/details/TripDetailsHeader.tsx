@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Trip} from "../../../app/models/trip";
+import {format} from "date-fns";
 
 const tripImageStyle = {
     filter: 'brightness(30%)'
@@ -34,7 +36,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                                     content={trip.title}
                                     style={{color: 'white'}}
                                 />
-                                <p>{trip.startDate}</p>
+                                <p>{format(trip.startDate!, 'dd MMM yyyy')}</p>
                                 <p>
                                     Hosted by <strong>Bob</strong>
                                 </p>
@@ -46,7 +48,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
             <Segment clearing attached='bottom'>
                 <Button color='teal'>Join Trip</Button>
                 <Button>Cancel attendance</Button>
-                <Button color='orange' floated='right'>
+                <Button as={Link} to={`/manage/${trip.id}`} color='orange' floated='right'>
                     Manage Event
                 </Button>
             </Segment>
