@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { Button, Icon, Item, Segment } from 'semantic-ui-react';
+import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
 import { Trip } from '../../../app/models/trip';
 import { format } from "date-fns";
+import TripListItemAttendee from './TripListItemAttendee';
 
 interface Props{
     trip: Trip
@@ -13,6 +14,9 @@ export default function TripListItem({trip}: Props){
     return (
         <Segment.Group>
             <Segment>
+                {trip.isCancelled && 
+                    <Label attached='top' color='red' content='Cancelled' style={{textAlign: 'center'}}/>
+                }
                 <Item.Group>
                     <Item>
                     <Item.Image size ='tiny' circular src='../assets/user.png'/>
@@ -20,7 +24,21 @@ export default function TripListItem({trip}: Props){
                         <Item.Header as={Link} to={`/trips/${trip.id}`}>
                             {trip.title}
                         </Item.Header>
-                        <Item.Description>Hosted by Steve</Item.Description>
+                        <Item.Description>Hosted by {trip.host?.displayName}</Item.Description>
+                        {trip.isHost && (
+                            <Item.Description>
+                                <Label basic color = 'orange'>
+                                    You are hosting this trip
+                                </Label>
+                            </Item.Description>
+                        )}
+                        {trip.isGoing && (
+                            <Item.Description>
+                                <Label basic color = 'green'>
+                                    You are going to this trip
+                                </Label>
+                            </Item.Description>
+                        )}
                     </Item.Content>
                     </Item>
                 </Item.Group>
@@ -32,7 +50,7 @@ export default function TripListItem({trip}: Props){
                 </span>
             </Segment>
             <Segment secondary>
-                Attendees go here
+                <TripListItemAttendee attendees={trip.attendees!}></TripListItemAttendee>
             </Segment>
             <Segment clearing>
                 <span>{trip.description}</span>

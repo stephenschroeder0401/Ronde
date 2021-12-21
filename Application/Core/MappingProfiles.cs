@@ -19,7 +19,7 @@ namespace Application.Core
                     .FirstOrDefault(x => x.IsHost).AppUser.UserName));
 
             CreateMap<TripAttendee, Profiles.Profile>()
-                .ForMember(d => d.DiplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
+                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.AppUser.UserName))
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.AppUser.Bio));
 

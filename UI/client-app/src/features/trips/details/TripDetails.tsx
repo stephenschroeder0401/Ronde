@@ -24,6 +24,7 @@ export default observer(function TripDetails ({} : Props) {
   
   if(loadingInitial || !trip) return <LoadingComponent/>;
 
+  console.log(trip.attendees);
   return(
     <Grid>
       <Grid.Column width={10}>
@@ -32,7 +33,7 @@ export default observer(function TripDetails ({} : Props) {
         <TripDetailedChat/>
       </Grid.Column>
       <Grid.Column width={6}>
-        <TripDetailedSidebar/>
+        <TripDetailedSidebar trip={trip}/>
       </Grid.Column>
     </Grid>
   );

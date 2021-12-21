@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
 import { Link } from 'react-router-dom';
-import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
+import {Button, Header, Item, Segment, Image, Label} from 'semantic-ui-react'
 import {Trip} from "../../../app/models/trip";
 import {format} from "date-fns";
+import { useStore } from '../../../app/stores/store';
 
 const tripImageStyle = {
     filter: 'brightness(30%)'
@@ -23,9 +24,13 @@ interface Props {
 }
 
 export default observer (function TripDetailedHeader({trip}: Props) {
+    const {tripStore: {updateAttendance, loading, cancelTripToggle} } = useStore();
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
+                {trip.isCancelled &&
+                    <Label style={{position: 'absolute', zIndex:1000, left: -14, top:20}} ribbon color='red' content='Cancelled'/>
+                }
                 <Image src={`..//assets/categoryImages/travel.jpg`} fluid style={tripImageStyle}/>
                 <Segment style={tripImageTextStyle} basic>
                     <Item.Group>
@@ -38,7 +43,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                                 />
                                 <p>{format(trip.startDate!, 'dd MMM yyyy')}</p>
                                 <p>
-                                    Hosted by <strong>Bob</strong>
+                                    Hosted by <strong><Link to={`/profiles/${trip.host?.username}`}>{trip.host?.displayName}</Link></strong>
                                 </p>
                             </Item.Content>
                         </Item>
@@ -46,11 +51,27 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                <Button color='teal'>Join Trip</Button>
-                <Button>Cancel attendance</Button>
-                <Button as={Link} to={`/manage/${trip.id}`} color='orange' floated='right'>
+                
+                {trip.isHost ? (
+                <>
+                <Button 
+                    color={trip.isCancelled ? 'green' : 'red'} 
+                    floated='left'
+                    basic
+                    content={trip.isCancelled ? 'Re-activate Trip' : 'Cancel Trip'}
+                    onClick={cancelTripToggle}
+                    loading={loading}   
+                />    
+                <Button as={Link} disabled={trip.isCancelled} to={`/manage/${trip.id}`} color='orange' floated='right'>
                     Manage Event
                 </Button>
+                </>) 
+                : trip.isGoing ? (
+                    <Button loading={loading} onClick={updateAttendance}>Cancel attendance</Button>
+                )
+                :(
+                    <Button loading={loading} disabled={trip.isCancelled} onClick={updateAttendance} color='teal'>Join Trip</Button>
+                )}
             </Segment>
         </Segment.Group>
     )

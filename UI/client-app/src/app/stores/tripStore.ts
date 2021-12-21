@@ -1,7 +1,11 @@
 import { action, makeAutoObservable, makeObservable, observable, runInAction} from "mobx";
 import agent from "../api/agent";
-import { Trip } from "../models/trip";
+import { Trip, TripFormValues } from "../models/trip";
 import {format} from "date-fns";
+import { store } from "./store";
+import UserStore from "./userStore";
+import { Profile } from "../models/profile";
+import { tokenToString } from "typescript";
 
 
 export default class TripStore{
@@ -48,6 +52,23 @@ export default class TripStore{
     }
 
     private setTrip = (trip: Trip) =>{
+
+        const user = store.userStore.user;
+
+        console.log(user);
+
+        if(user){
+            trip.isGoing = trip.attendees!.some(
+                a => a.username === user.userName
+            )
+
+            trip.isHost = trip.hostUsername === user.userName;
+            trip.host = trip.attendees?.find(x => x.username === trip.hostUsername);
+        }
+
+        console.log(user?.userName);
+        console.log(trip.hostUsername);
+
         trip.startDate = new Date(trip.startDate!);
         trip.endDate = new Date(trip.endDate!);
         this.tripRegistry.set(trip.id, trip);
@@ -85,16 +106,19 @@ export default class TripStore{
     }
 
 
-    createTrip = async (trip: Trip) =>{
-
-        this.loading = true;
+    createTrip = async (trip: TripFormValues) =>{
         
+        const user = store.userStore.user;
+        const attendee = new Profile(user!);
+
         try{
             let newId = await agent.Trips.create(trip);
+            const newTrip = new Trip(trip);
+            newTrip.hostUsername = user?.userName;
+            newTrip.attendees = [attendee];
+            this.setTrip(newTrip);
             runInAction(()=>{
-                this.tripRegistry.set(trip.id, trip);
-                this.selectedTrip = trip;
-                this.editMode = false
+                this.selectedTrip = newTrip;
             });
             return newId;
         }
@@ -106,21 +130,19 @@ export default class TripStore{
         }
     }
 
-    updateTrip = async (trip: Trip) => {
+    updateTrip = async (trip: TripFormValues) => {
         try{
             await agent.Trips.update(trip);
             runInAction(()=>{
-                this.tripRegistry.set(trip.id, trip);
-                this.selectedTrip = trip;
-                this.editMode = false;
-                this.loading = false;
+                if(trip.id){
+                    let updatedTrip = {...this.getTrip(trip.id), ...trip}
+                    this.tripRegistry.set(trip.id, updatedTrip as Trip);
+                    this.selectedTrip = updatedTrip as Trip;
+                }
             })
         }
         catch(error){
             console.log(error);
-            runInAction(() =>{
-                this.loading = false;
-            });
         }
     }
     
@@ -138,6 +160,49 @@ export default class TripStore{
             runInAction(()=>{
                 this.loading = false;
             });
+        }
+    }
+
+    updateAttendance = async () =>{
+        const user = store.userStore.user;
+        this.loading = true;
+        try{
+            await agent.Trips.attend(this.selectedTrip!.id);
+            runInAction(() =>{
+                if(this.selectedTrip?.isGoing){
+                    this.selectedTrip.attendees = this.selectedTrip.attendees?.filter(a => a.username !== user?.userName);
+                    this.selectedTrip.isGoing = false;
+                }
+                else{
+                    const attendee = new Profile(user!);
+                    this.selectedTrip?.attendees?.push(attendee);
+                    this.selectedTrip!.isGoing = true;
+                }
+
+                this.tripRegistry.set(this.selectedTrip!.id, this.selectedTrip!);
+            })
+        }catch(error){
+            console.log(error);
+        }
+        finally{
+            runInAction(() => this.loading = false);
+        }
+    }
+
+    cancelTripToggle = async () =>{
+        this.loading = true;
+        try{
+            await agent.Trips.attend(this.selectedTrip!.id);
+            runInAction(() =>{
+                this.selectedTrip!.isCancelled = !this.selectedTrip?.isCancelled;
+                this.tripRegistry.set(this.selectedTrip!.id, this.selectedTrip!);
+            });
+        }
+        catch(error){
+            console.log(error);
+        }
+        finally{
+            runInAction(() => this.loading = false);
         }
     }
 
