@@ -19,12 +19,12 @@ export default function TripListItem({trip}: Props){
                 }
                 <Item.Group>
                     <Item>
-                    <Item.Image size ='tiny' circular src='../assets/user.png'/>
+                    <Item.Image size ='tiny' circular src={trip.host?.image || '../assets/user.png'}/>
                     <Item.Content>
                         <Item.Header as={Link} to={`/trips/${trip.id}`}>
                             {trip.title}
                         </Item.Header>
-                        <Item.Description>Hosted by {trip.host?.displayName}</Item.Description>
+                        <Item.Description>Hosted by <Link to={`/profiles/${trip.host?.username}`}>{trip.host?.displayName}</Link></Item.Description>
                         {trip.isHost && (
                             <Item.Description>
                                 <Label basic color = 'orange'>

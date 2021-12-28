@@ -11,9 +11,10 @@ namespace Persistance
         {
         }
 
-        public DbSet<Value> Values { get; set; }
         public DbSet<Trip> Trip { get; set; }
         public DbSet<TripAttendee> TripAttendees { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<UserFollowing> UserFollowings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -25,6 +26,21 @@ namespace Persistance
                 .HasOne(u => u.AppUser)
                 .WithMany(a => a.Trips)
                 .HasForeignKey(aa => aa.AppUserId);
+
+            builder.Entity<UserFollowing>(b =>
+            {
+                b.HasIndex(p => new { p.ObserverId, p.TargetId }).IsUnique();
+
+                b.HasOne(o => o.Observer)
+                    .WithMany(f => f.Followings)
+                    .HasForeignKey(o => o.ObserverId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                b.HasOne(o => o.Target)
+                    .WithMany(f => f.Followers)
+                    .HasForeignKey(o => o.TargetId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }

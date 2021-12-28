@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistance;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(RondeContext))]
-    partial class RondeContextModelSnapshot : ModelSnapshot
+    [Migration("20211223184427_Photo")]
+    partial class Photo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +94,7 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Photo", b =>
                 {
-                    b.Property<int>("PhotoId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -103,13 +105,10 @@ namespace Persistance.Migrations
                     b.Property<bool>("IsMain")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PublicId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PhotoId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
@@ -168,30 +167,6 @@ namespace Persistance.Migrations
                     b.HasIndex("TripId");
 
                     b.ToTable("TripAttendees");
-                });
-
-            modelBuilder.Entity("Domain.UserFollowing", b =>
-                {
-                    b.Property<int>("UserFollowingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("ObserverId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TargetId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserFollowingId");
-
-                    b.HasIndex("TargetId");
-
-                    b.HasIndex("ObserverId", "TargetId")
-                        .IsUnique()
-                        .HasFilter("[ObserverId] IS NOT NULL AND [TargetId] IS NOT NULL");
-
-                    b.ToTable("UserFollowings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -351,23 +326,6 @@ namespace Persistance.Migrations
                     b.Navigation("Trip");
                 });
 
-            modelBuilder.Entity("Domain.UserFollowing", b =>
-                {
-                    b.HasOne("Domain.AppUser", "Observer")
-                        .WithMany("Followings")
-                        .HasForeignKey("ObserverId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.AppUser", "Target")
-                        .WithMany("Followers")
-                        .HasForeignKey("TargetId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Observer");
-
-                    b.Navigation("Target");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -421,10 +379,6 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.AppUser", b =>
                 {
-                    b.Navigation("Followers");
-
-                    b.Navigation("Followings");
-
                     b.Navigation("Photos");
 
                     b.Navigation("Trips");

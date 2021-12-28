@@ -15,6 +15,8 @@ import { useStore } from '../stores/store';
 import React, { useEffect } from 'react';
 import LoadingComponent from './LoadingComponents';
 import ModalContainer from '../common/modals/modalContainer';
+import ProfilePage from '../../features/profiles/ProfilePage';
+
 
 function App() {
   const location = useLocation();
@@ -45,6 +47,7 @@ function App() {
                   <Route path='/trips' exact component={TripDashboard}/>
                   <Route path='/trips/:id' component={TripDetails}/>
                   <Route key={location.key} path={['/createtrip', '/manage/:id']} component={TripForm}/>
+                  <Route path='/profiles/:username' component={ProfilePage}/>
                   <Route path='/errors' component={TestErrors}/>
                   <Route path='/server-error' component={ServerError}/>
                   <Route path='/login' component={LoginForm}/>
