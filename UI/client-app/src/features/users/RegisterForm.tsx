@@ -27,9 +27,9 @@ export default observer(function RegisterForm(){
            {({handleSubmit, isSubmitting, errors, isValid, dirty}) => (
                <Form className='ui form error' onSubmit={handleSubmit} autoComplete='off'>
                    <Header as='h2' content='Sign up for Ronde' color='teal' textAlign='center'/>
-                   <MyTextInput name='displayName' placeholder='Display Name'></MyTextInput>
-                   <MyTextInput name='username' placeholder='User Name'></MyTextInput>
                    <MyTextInput name='email' placeholder='Email'></MyTextInput>
+                   <MyTextInput name='username' placeholder='User Name'></MyTextInput>
+                   <MyTextInput name='displayName' placeholder='Full Name'></MyTextInput>
                    <MyTextInput name='password' placeholder='Password' type='password'></MyTextInput>
                    <ErrorMessage
                         name='error' render={() => <ValidationErrors errors={errors.error}/>}

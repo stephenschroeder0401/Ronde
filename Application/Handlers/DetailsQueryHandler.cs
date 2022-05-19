@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Application.Profiles;
 using AutoMapper;
 using Profile = Application.Profiles.Profile;
+using Application.Interfaces;
 
 namespace Application.Handlers
 {
@@ -20,20 +21,27 @@ namespace Application.Handlers
     {
         private readonly RondeContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserAccessor _userAccessor;
 
-        public DetailsQueryHandler(RondeContext context, IMapper mapper)
+        public DetailsQueryHandler(RondeContext context, IMapper mapper, IUserAccessor userAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _userAccessor = userAccessor;
         }
 
         public async Task<Result<Profile>> Handle(DetailsQuery request, CancellationToken cancellationToken)
         {
+
+            var test = request;
+
             var user = await _context.Users
-                .ProjectTo<Profile>(_mapper.ConfigurationProvider)
+                .ProjectTo<Profile>(_mapper.ConfigurationProvider, 
+                    new { currentUsername = _userAccessor.GetUsername()})
                 .SingleOrDefaultAsync(x => x.Username == request.Username);
 
             if (user == null) return null;
+
 
             return Result<Profiles.Profile>.Success(user);
         }

@@ -91,8 +91,9 @@ const Profiles = {
         })
     },
     setMainPhoto: (id: string) => requests.put(`/photos/`, {publicId: id}),
-    deletePhoto: (id: string) => requests.del(`/photos/${id}`)
-}
+    deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+    toggleFollowing: (userId: string) => requests.post(`/userFollowing/${userId}`,{})
+};
 
 
 const agent ={

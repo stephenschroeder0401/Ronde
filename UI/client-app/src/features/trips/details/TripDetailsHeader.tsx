@@ -70,7 +70,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                     <Button loading={loading} onClick={updateAttendance}>Cancel attendance</Button>
                 )
                 :(
-                    <Button loading={loading} disabled={trip.isCancelled} onClick={updateAttendance} color='teal'>Join Trip</Button>
+                    <Button loading={loading} disabled={trip.isCancelled} onClick={updateAttendance} color='teal'>Request To Join Trip</Button>
                 )}
             </Segment>
         </Segment.Group>

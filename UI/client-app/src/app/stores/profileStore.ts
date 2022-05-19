@@ -95,4 +95,26 @@ export default class ProfileStore{
         }
 
     }
+
+    toggleFollowing = async (profile: Profile) =>{
+        this.loading = true;
+        try{
+            await agent.Profiles.toggleFollowing(profile.userId);
+            runInAction(() =>{
+                if(this.profile?.following){
+                    this.profile.following = false;
+                    this.profile.followersCount--;
+                }
+                else if(this.profile?.following == false){
+                    this.profile.following = true;
+                    this.profile.followersCount++;
+                }
+                this.loading = false;
+            })
+        }
+        catch(error){
+            runInAction(() => this.loading = false)
+        }
+
+    }
 }

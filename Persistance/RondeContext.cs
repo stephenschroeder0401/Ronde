@@ -22,10 +22,13 @@ namespace Persistance
 
             builder.Entity<TripAttendee>(x => x.HasKey(aa => new { aa.AppUserId, aa.TripId }));
 
-            builder.Entity<TripAttendee>()
-                .HasOne(u => u.AppUser)
+            builder.Entity<TripAttendee>(t => {
+                t.HasOne(u => u.AppUser)
                 .WithMany(a => a.Trips)
                 .HasForeignKey(aa => aa.AppUserId);
+
+                t.HasOne(s => s.AttendeeStatus);
+                });
 
             builder.Entity<UserFollowing>(b =>
             {
