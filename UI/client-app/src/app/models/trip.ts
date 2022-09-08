@@ -1,4 +1,4 @@
-import { Profile } from "./profile";
+import { Profile, TripAttendee } from "./profile";
 
 export interface Trip {
     id: number;
@@ -14,7 +14,7 @@ export interface Trip {
     isGoing: boolean;
     isHost: boolean;
     host?: Profile;
-    attendees?: Profile[];
+    attendees?: TripAttendee[];
 }
 
 export class Trip implements Trip{

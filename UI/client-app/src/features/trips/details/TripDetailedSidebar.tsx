@@ -12,30 +12,80 @@ export default observer(function ActivityDetailedSidebar ({trip : {attendees, ho
     
     if(!attendees)  return null;
 
+    let confirmed = attendees.filter(a => a.status == 4);
+    let interested = attendees.filter(a => (a.status == 1 || a.status == 2 || a.status == 3))
+
     return (
+
         <>
             <Segment
                 textAlign='center'
                 style={{ border: 'none' }}
                 attached='top'
+                floated='right'
                 secondary
                 inverted
                 color='teal'
             >
-                {attendees!.length} {attendees!.length == 1 ? 'Person' : 'People'} going
+                <h3>HOST</h3>
             </Segment>
-            <Segment attached>
+            <Segment attached floated='right'>
                 <List relaxed divided>
-                    {attendees!.map(attendee => (
+                <Item style={{ position: 'relative' }} key={host?.username}>
+                <Image size='tiny' src={host?.image || '/assets/user.png'} />
+                <Item.Content verticalAlign='middle'>
+                    <Item.Header as='h3'>
+                        <Link to={`/profiles/${host?.username}`}><span>{host?.displayName}</span></Link>
+                    </Item.Header>
+                </Item.Content> 
+                </Item>
+                </List>           
+            </Segment>
+        
+            <Segment
+                textAlign='center'
+                style={{ border: 'none' }}
+                attached='top'
+                floated='right'
+                secondary
+                inverted
+                color='teal'
+            >
+                <h3>{confirmed!.length} {confirmed!.length == 1 ? 'PERSON' : 'PEPLE'} CONFIRMED</h3>
+            </Segment>
+            <Segment attached floated='right'>
+                <List relaxed divided>
+                    {confirmed!.map(attendee => (
                         <Item style={{ position: 'relative' }} key={attendee.username}>
-                            {attendee.username === host?.username &&
-                        <Label
-                            style={{ position: 'absolute' }}
-                            color='orange'
-                            ribbon='right'
-                        >
-                            Host
-                        </Label>}
+                        <Image size='tiny' src={attendee.image || '/assets/user.png'} />
+                        <Item.Content verticalAlign='middle'>
+                            <Item.Header as='h3'>
+                                <Link to={`/profiles/${attendee.username}`}><span>{attendee.displayName}</span></Link>
+                            </Item.Header>
+                            {attendee.following &&
+                            <Item.Extra style={{ color: 'orange' }}>Following</Item.Extra>}
+                        </Item.Content>
+                        </Item>
+                    ))}               
+
+               
+                </List>
+            </Segment>
+            <Segment
+                textAlign='center'
+                style={{ border: 'none' }}
+                attached='top'
+                floated='right'
+                secondary
+                inverted
+                color='teal'
+            >
+                <h3>{interested!.length} {interested!.length == 1 ? 'PERSON' : 'PEOPLE'} INTERESTED</h3>
+            </Segment>
+            <Segment attached floated='right'>
+                <List relaxed divided>
+                    {interested!.map(attendee => (
+                        <Item style={{ position: 'relative' }} key={attendee.username}>
                         <Image size='tiny' src={attendee.image || '/assets/user.png'} />
                         <Item.Content verticalAlign='middle'>
                             <Item.Header as='h3'>

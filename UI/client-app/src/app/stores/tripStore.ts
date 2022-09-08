@@ -4,7 +4,7 @@ import { Trip, TripFormValues } from "../models/trip";
 import {format} from "date-fns";
 import { store } from "./store";
 import UserStore from "./userStore";
-import { Profile } from "../models/profile";
+import { Profile, TripAttendee } from "../models/profile";
 import { tokenToString } from "typescript";
 
 
@@ -57,10 +57,17 @@ export default class TripStore{
 
         console.log(user);
 
+        console.log(trip.attendees);
+
         if(user){
+
             trip.isGoing = trip.attendees!.some(
                 a => a.username === user.userName
             )
+
+            let host = trip.attendees?.filter(x => x.username === trip.hostUsername)
+           /*  if(host !== undefined)
+                trip.host =  host[0].username; */
 
             trip.isHost = trip.hostUsername === user.userName;
             trip.host = trip.attendees?.find(x => x.username === trip.hostUsername);
@@ -109,7 +116,7 @@ export default class TripStore{
     createTrip = async (trip: TripFormValues) =>{
         
         const user = store.userStore.user;
-        const attendee = new Profile(user!);
+        const attendee =  new TripAttendee(new Profile(user!), 4);
 
         try{
             let newId = await agent.Trips.create(trip);
@@ -174,7 +181,7 @@ export default class TripStore{
                     this.selectedTrip.isGoing = false;
                 }
                 else{
-                    const attendee = new Profile(user!);
+                    const attendee = new TripAttendee(new Profile(user!), 4);
                     this.selectedTrip?.attendees?.push(attendee);
                     this.selectedTrip!.isGoing = true;
                 }

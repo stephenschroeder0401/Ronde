@@ -50,7 +50,7 @@ export default function TripListItem({trip}: Props){
                 </span>
             </Segment>
             <Segment secondary>
-                <TripListItemAttendee attendees={trip.attendees!}></TripListItemAttendee>
+                <TripListItemAttendee attendees={trip.attendees}></TripListItemAttendee>
             </Segment>
             <Segment clearing>
                 <span>{trip.description}</span>

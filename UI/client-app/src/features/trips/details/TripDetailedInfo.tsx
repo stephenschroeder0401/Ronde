@@ -9,30 +9,10 @@ interface Props {
 }
 
 export default observer(function TripDetailedInfo({trip}: Props) {
+
+    const tripDescription = `Surf trip to ${trip.city}! There are limited spots. We are going to be working, and surfng, and exploring nightlife on weekend nights.`
     return (
-        <Segment.Group>
-            <Segment attached='top'>
-                <Grid>
-                    <Grid.Column width={1}>
-                        <Icon size='large' color='teal' name='info'/>
-                    </Grid.Column>
-                    <Grid.Column width={15}>
-                        <p>{trip.description}</p>
-                    </Grid.Column>
-                </Grid>
-            </Segment>
-            <Segment attached>
-                <Grid verticalAlign='middle'>
-                    <Grid.Column width={1}>
-                        <Icon name='calendar' size='large' color='teal'/>
-                    </Grid.Column>
-                    <Grid.Column width={15}>
-                         <span>
-                           {format(trip.startDate!, 'dd MMM yyyy h:mm aa')}
-                         </span>
-                    </Grid.Column>
-                </Grid>
-            </Segment>
+        <Segment.Group> 
             <Segment attached>
                 <Grid verticalAlign='middle'>
                     <Grid.Column width={1}>
@@ -40,6 +20,13 @@ export default observer(function TripDetailedInfo({trip}: Props) {
                     </Grid.Column>
                     <Grid.Column width={11}>
                         <span>{trip.venue}, {trip.city}</span>
+                    </Grid.Column>
+                </Grid>
+            </Segment>
+            <Segment attached>
+                <Grid verticalAlign='middle'>
+                    <Grid.Column width={11}>
+                        <span>{tripDescription}</span>
                     </Grid.Column>
                 </Grid>
             </Segment>
