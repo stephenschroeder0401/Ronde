@@ -55,26 +55,17 @@ export default class TripStore{
 
         const user = store.userStore.user;
 
-        console.log(user);
-
-        console.log(trip.attendees);
-
         if(user){
-
-            trip.isGoing = trip.attendees!.some(
-                a => a.username === user.userName
-            )
 
             let host = trip.attendees?.filter(x => x.username === trip.hostUsername)
            /*  if(host !== undefined)
                 trip.host =  host[0].username; */
 
+            trip.userStatus = trip.attendees?.find(x => x.username == user.userName)?.status ?? 0;
+            
             trip.isHost = trip.hostUsername === user.userName;
             trip.host = trip.attendees?.find(x => x.username === trip.hostUsername);
         }
-
-        console.log(user?.userName);
-        console.log(trip.hostUsername);
 
         trip.startDate = new Date(trip.startDate!);
         trip.endDate = new Date(trip.endDate!);
@@ -170,20 +161,21 @@ export default class TripStore{
         }
     }
 
-    updateAttendance = async () =>{
+    updateAttendance = async (statusId: number) =>{
         const user = store.userStore.user;
         this.loading = true;
+
         try{
-            await agent.Trips.attend(this.selectedTrip!.id);
+            await agent.Trips.attend(this.selectedTrip!.id, statusId);
             runInAction(() =>{
-                if(this.selectedTrip?.isGoing){
+                if(this.selectedTrip?.userStatus && statusId === 0){
                     this.selectedTrip.attendees = this.selectedTrip.attendees?.filter(a => a.username !== user?.userName);
-                    this.selectedTrip.isGoing = false;
+                    this.selectedTrip.userStatus = 0;
                 }
                 else{
-                    const attendee = new TripAttendee(new Profile(user!), 4);
+                    const attendee = new TripAttendee(new Profile(user!), statusId);
                     this.selectedTrip?.attendees?.push(attendee);
-                    this.selectedTrip!.isGoing = true;
+                    this.selectedTrip!.userStatus = statusId;
                 }
 
                 this.tripRegistry.set(this.selectedTrip!.id, this.selectedTrip!);
@@ -199,7 +191,7 @@ export default class TripStore{
     cancelTripToggle = async () =>{
         this.loading = true;
         try{
-            await agent.Trips.attend(this.selectedTrip!.id);
+            await agent.Trips.attend(this.selectedTrip!.id, 0);
             runInAction(() =>{
                 this.selectedTrip!.isCancelled = !this.selectedTrip?.isCancelled;
                 this.tripRegistry.set(this.selectedTrip!.id, this.selectedTrip!);

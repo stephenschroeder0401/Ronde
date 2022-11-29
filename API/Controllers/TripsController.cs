@@ -55,10 +55,10 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new DeleteTripCommand { Id = id }));
         }
 
-        [HttpPost("{id}/attend")]
-        public async Task<IActionResult> Attend(int id)
+        [HttpPost("{id}/attend/{statusId}")]
+        public async Task<IActionResult> Attend(int id, int statusId)
         {
-            return HandleResult(await Mediator.Send(new AttendanceCommand { Id = id }));
+            return HandleResult(await Mediator.Send(new AttendanceCommand { Id = id, AttendeeStatusId = statusId}));
         }
     }
 }

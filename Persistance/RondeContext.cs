@@ -15,6 +15,7 @@ namespace Persistance
         public DbSet<TripAttendee> TripAttendees { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<UserFollowing> UserFollowings { get; set; }
+        public DbSet<AttendeeStatus> AttendeeStatus { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

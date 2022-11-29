@@ -13,7 +13,7 @@ const sleep = (delay: number) =>{
     })
 }
 
-axios.defaults.baseURL = 'https://localhost:44356';
+axios.defaults.baseURL = 'https://localhost:44323';
 
 axios.interceptors.request.use(config =>{
     const token = store.commonStore.token;
@@ -71,7 +71,7 @@ const Trips = {
     create: (trip: TripFormValues) => requests.post<number>('/trips', trip),
     update: (trip: TripFormValues) => requests.put<number>(`/trips/${trip.id}`, trip),
     delete: (id: number) => requests.del<void>(`/trips/${id}`),
-    attend: (id: number) => requests.post<void>(`/trips/${id}/attend`, {})
+    attend: (id: number, statusId: number) => requests.post<void>(`/trips/${id}/attend/${statusId}`, {})
 }
 
 const Account ={

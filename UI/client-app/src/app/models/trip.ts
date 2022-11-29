@@ -11,7 +11,7 @@ export interface Trip {
     venue: string;
     hostUsername?: string;
     isCancelled: boolean;
-    isGoing: boolean;
+    userStatus: number;
     isHost: boolean;
     host?: Profile;
     attendees?: TripAttendee[];

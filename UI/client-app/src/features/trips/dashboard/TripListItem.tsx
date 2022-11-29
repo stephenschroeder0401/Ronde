@@ -3,13 +3,13 @@ import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
 import { Trip } from '../../../app/models/trip';
 import { format } from "date-fns";
 import TripListItemAttendee from './TripListItemAttendee';
+import { useStore } from '../../../app/stores/store';
 
 interface Props{
     trip: Trip
 }
 
 export default function TripListItem({trip}: Props){
-
 
     return (
         <Segment.Group>
@@ -32,7 +32,7 @@ export default function TripListItem({trip}: Props){
                                 </Label>
                             </Item.Description>
                         )}
-                        {trip.isGoing && (
+                        {trip.userStatus == 4 && (
                             <Item.Description>
                                 <Label basic color = 'green'>
                                     You are going to this trip

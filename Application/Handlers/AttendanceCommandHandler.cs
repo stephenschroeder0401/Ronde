@@ -41,28 +41,41 @@ namespace Application.Handlers
 
             var attendance = trip.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
 
-            if(attendance != null && hostUsername == user.UserName)
-            {
-                trip.IsCancelled = !trip.IsCancelled;
-            }
-
-            if(attendance != null && hostUsername != user.UserName)
+            if (request.AttendeeStatusId == 0 && attendance != null)
             {
                 trip.Attendees.Remove(attendance);
             }
-            if(attendance == null)
+            else
             {
-                attendance = new TripAttendee
-                {
-                    AppUser = user,
-                    Trip = trip,
-                    IsHost = false
-                };
 
-                trip.Attendees.Add(attendance);
+                var status = await _context.AttendeeStatus.FirstOrDefaultAsync(x => x.AttendeeStatusId == request.AttendeeStatusId);
+
+
+                if (attendance != null && hostUsername == user.UserName)
+                {
+                    trip.IsCancelled = !trip.IsCancelled;
+                }
+
+                if (attendance != null && hostUsername != user.UserName)
+                {
+                    attendance.AttendeeStatus = status;
+                }
+                else if (attendance == null)
+                {
+                    attendance = new TripAttendee
+                    {
+                        AppUser = user,
+                        Trip = trip,
+                        TripId = trip.Id,
+                        IsHost = false,
+                        AttendeeStatus = status,
+                    };
+                    await _context.TripAttendees.AddAsync(attendance);
+                }
             }
 
             var result = await _context.SaveChangesAsync() > 0;
+
 
             return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating attendance");
             

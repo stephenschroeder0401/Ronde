@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import {Button, Header, Item, Segment, Image, Label} from 'semantic-ui-react'
 import {Trip} from "../../../app/models/trip";
+import AttendanceModal from "../../../app/common/modals/attendanceModal";
 import {format} from "date-fns";
 import { useStore } from '../../../app/stores/store';
 import Lightbox from 'react-image-lightbox';
@@ -22,13 +23,40 @@ interface Props {
 export default observer (function TripDetailedHeader({trip}: Props) {
     const {tripStore: {updateAttendance, loading, cancelTripToggle} } = useStore();
     const [photosOpen, setPhotosOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalBody, setModalBody] = useState('');
+    const [modalHeader, setModalHeader] = useState('');
     const [photoIdx, setPhotoIdx] = useState(0);
     
     const images = ['..//assets/categoryImages/nosara2.jpg','..//assets/categoryImages/travel.jpg','..//assets/categoryImages/nosara1.jpg']
 
+    function handleAttendance (status: number){
+        
+        switch (status) { 
+        case 1 : 
+            setModalHeader("Request To Join Trip");
+            setModalBody("This will notify the host that you would like to join this trip. "+
+            "Payment will not be required until your request has been accepted. Would you like to proceed?");
+            setModalOpen(true);
+        }
+        updateAttendance(status);
+    }
+
+    function handleCloseModal(e: Event){
+        console.log(e);
+        setModalOpen(false);
+
+    }
+
+
     return (
         <Segment.Group>
+            <AttendanceModal body={modalBody} header={modalHeader} isOpen={modalOpen} closeModal={(e: Event)=> handleCloseModal(e)}/>
             <Segment>
+            
+                {trip.userStatus == 2 &&
+                    <Label size='large' style={{position: 'absolute', left: -18, top:-20}} ribbon color='blue' content='Congrats! You have been accepted. Proceed with your payment to confirm your spot!'/>}          
+            
                     <Item.Group>
                         <Item>
                             <Item.Content>
@@ -37,9 +65,6 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                                     content={trip.title}
                                     style={{color: 'black'}}
                                 />
-                                {/* <p>
-                                    Hosted by <strong><Link to={`/profiles/${trip.host?.username}`}>{trip.host?.displayName}</Link></strong>
-                                </p> */}
                             </Item.Content>
                         </Item>
                         <Item>
@@ -61,11 +86,6 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                     />}
 
             </Segment>
-            <Segment basic attached='top' style={{padding: '0'}}>
-                {trip.isCancelled &&
-                    <Label style={{position: 'absolute', zIndex:1000, left: -14, top:20}} ribbon color='red' content='Cancelled'/>
-                }          
-            </Segment>
             <Segment clearing attached='bottom'>
                 {trip.isHost ? (
                 <>
@@ -80,13 +100,20 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                 <Button as={Link} disabled={trip.isCancelled} to={`/manage/${trip.id}`} color='orange' floated='right'>
                     Manage Event
                 </Button>
-                </>) 
-                : trip.isGoing ? (
-                    <Button loading={loading} onClick={updateAttendance}>Cancel attendance</Button>
+                </>)
+                : trip.userStatus == 1? (
+                    <Button loading={loading} color='red' onClick={() =>handleAttendance(0)}>Cancel Request</Button>
+                ) 
+                : trip.userStatus == 2 ? (
+                    <>
+                    <Button loading={loading} color='teal' onClick={() =>handleAttendance(0)}>Complete Payment</Button>
+                    <Button loading={loading} color='red' onClick={() =>handleAttendance(0)}>Cancel Request</Button>
+                    </>
                 )
-                :(
-                    <Button loading={loading} disabled={trip.isCancelled} onClick={updateAttendance} color='teal'>Request To Join Trip</Button>
-                )}
+                : trip.userStatus == 4 ?(
+                    <Button loading={loading} disabled={trip.isCancelled} onClick={() => console.log("request cancel")} color='red'>Request To Cancel</Button>
+                )
+                :   <Button loading={loading} color='teal' onClick={() =>handleAttendance(1)}>Requst To Join</Button>}
             </Segment>
         </Segment.Group>
     )
