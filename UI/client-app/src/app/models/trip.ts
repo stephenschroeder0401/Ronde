@@ -19,6 +19,7 @@ export interface Trip {
     attendees?: TripAttendee[];
     spots?: Spot[];
     stints?: Stint[];
+    prices?: Price[];
 }
 
 export class Trip implements Trip{
@@ -52,7 +53,7 @@ export class TripFormValues{
 } 
 
 export interface Spot{
-     id: number;
+     spotId: number;
      title: string;
      description: string;
      isPrivate: boolean;
@@ -61,7 +62,15 @@ export interface Spot{
 }
 
 export interface Stint{
-    id: number;
+    stintId: number;
     startDate: Date;
     endDate: Date;
+}
+
+
+export interface Price{
+    priceId: number;
+    stintId: number;
+    spotId: number;
+    price: number;
 }

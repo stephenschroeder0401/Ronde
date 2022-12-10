@@ -1,10 +1,12 @@
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Segment, Grid, Icon, Header, Menu, Item, Label, Checkbox, Image} from 'semantic-ui-react'
 import {Trip} from "../../../app/models/trip";
 import {format} from "date-fns";
 import { string } from 'yup/lib/locale';
 import { style } from '@mui/system';
+import moment from 'moment';
+import { TripAttendee } from '../../../app/models/profile';
 
 
 
@@ -13,12 +15,36 @@ interface Props {
 }
 
 
-export default observer(function TripSelection({trip : {spots, host, stints}} : Props) {
+export default observer(function TripSelection({trip : {spots, host, stints, prices}} : Props) {
 
-    const [activeItems, setActiveItem] = useState<string[]>([]);
+    const [selectedSpot, setSelectedSpot] = useState<string>();
+    const [activeStints, setActiveStints] = useState<string[]>([]);
     const [totalPrice, setTotalPrice] = useState(0.00);
 
-    console.log(spots);
+    useEffect(() => {
+
+        console.log("EFFECT");
+        console.log(selectedSpot);
+        console.log(activeStints);
+        
+        let spotPrices = prices?.filter(p => String(p.spotId) === selectedSpot);
+
+        console.log(spotPrices);
+
+        let total = spotPrices!.reduce((totalPrice, spotPrice)  => {
+            if(activeStints.includes(String(spotPrice.stintId)))
+                return totalPrice + spotPrice.price;
+            else
+                return totalPrice;
+            }
+            , 0);
+
+        console.log(total);    
+        
+        setTotalPrice(total);
+
+    }, [selectedSpot, activeStints])
+  
 
     return (
         <Segment.Group>
@@ -31,27 +57,22 @@ export default observer(function TripSelection({trip : {spots, host, stints}} : 
                     content="SELECT TRIP LEGS"
                     style={{color: '#5A5A5A'}}/>
                  <Menu>
-                    <Menu.Item name='leg1'  
-                        active={activeItems.includes('leg1')}
-                        onClick={() => {activeItems.includes('leg1') ? 
-                            setActiveItem(activeItems.filter(s => s != 'leg1')) 
-                            : setActiveItem([...activeItems,'leg1'])}}>
-                        <Header as='h4'>01/20 - 01/23  <Label color={activeItems.includes('leg1') ? "teal" : "grey"} size='medium' content="3 nights"></Label></Header>
-                    </Menu.Item>
-                     <Menu.Item name='leg2'  
-                        active={activeItems.includes('leg2')}
-                        onClick={() => {activeItems.includes('leg2') ? 
-                            setActiveItem(activeItems.filter(s => s != 'leg2')) 
-                            : setActiveItem([...activeItems,'leg2'])}}>
-                        <Header as='h4'>01/23 - 01/27<Label color={activeItems.includes('leg2') ? "teal" : "grey"} size='medium' content="4 nights"></Label></Header>
-                    </Menu.Item>
-                    <Menu.Item name='leg1'  
-                        active={activeItems.includes('leg3')}
-                        onClick={() => {activeItems.includes('leg3') ? 
-                            setActiveItem(activeItems.filter(s => s != 'leg3')) 
-                            : setActiveItem([...activeItems,'leg3'])}}>
-                        <Header as='h4'>01/27 - 01/30<Label color={activeItems.includes('leg3') ? "teal" : "grey"} size='medium' content="3 nights"></Label></Header>
-                    </Menu.Item>
+                    {
+                    stints!.map(stint => {
+                    let formatDateRange =  moment(stint.startDate).format("MM/DD") + " - " + 
+                                            moment(stint.endDate).format("MM/DD");
+                    
+                    let days = moment(stint.endDate).diff(moment(stint.startDate), 'days');
+
+                    return(
+                        <Menu.Item name={String(stint.stintId)}  
+                            active={activeStints.includes(String(stint.stintId))}
+                            onClick={() => 
+                                {activeStints.includes(String(stint.stintId)) ? 
+                                setActiveStints(activeStints.filter(s => s != String(stint.stintId))) 
+                                : setActiveStints([...activeStints, String(stint.stintId)])}}>
+                            <Header as='h4'>{formatDateRange}<Label color={activeStints?.includes(String(stint.stintId)) ? "teal" : "grey"} size='medium' content= {days + " nights"}></Label></Header>
+                        </Menu.Item>)})}
                     </Menu>
             </Segment>
             <Segment>
@@ -63,7 +84,9 @@ export default observer(function TripSelection({trip : {spots, host, stints}} : 
 
                     {spots!.map(spot => {
                         return(
-                        <Menu.Item name={"spot"+ spot.spotId} style={{display: 'flex'}}>
+                        <Menu.Item onClick={() => {setSelectedSpot(String(spot.spotId))}}
+                            active={selectedSpot == String(spot.spotId)}
+                            name={String(spot.spotId)} style={{display: 'flex'}}>
                             <span style={{flexDirection: 'column'}}>
                             <Header size='large'>
                                 TEST
