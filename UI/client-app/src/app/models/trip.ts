@@ -1,3 +1,5 @@
+import { TablePaginationUnstyledDisplayedRowsSlotProps } from "@mui/base";
+import { CardDescriptionProps } from "semantic-ui-react";
 import { Profile, TripAttendee } from "./profile";
 
 export interface Trip {
@@ -15,6 +17,8 @@ export interface Trip {
     isHost: boolean;
     host?: Profile;
     attendees?: TripAttendee[];
+    spots?: Spot[];
+    stints?: Stint[];
 }
 
 export class Trip implements Trip{
@@ -46,3 +50,18 @@ export class TripFormValues{
         }
     }
 } 
+
+export interface Spot{
+     id: number;
+     title: string;
+     description: string;
+     isPrivate: boolean;
+     maxGuests: number;
+     roomId: number
+}
+
+export interface Stint{
+    id: number;
+    startDate: Date;
+    endDate: Date;
+}

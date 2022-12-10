@@ -12,6 +12,10 @@ export default observer(function ActivityDetailedSidebar ({trip : {attendees, ho
     
     if(!attendees)  return null;
 
+    console.log("ATTENDEES");
+    console.log(attendees);
+
+
     let confirmed = attendees.filter(a => a.status == 4);
     let interested = attendees.filter(a => (a.status == 1 || a.status == 2 || a.status == 3))
 

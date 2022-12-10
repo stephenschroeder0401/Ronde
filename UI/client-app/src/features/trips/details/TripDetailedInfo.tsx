@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
-import {Segment, Grid, Icon} from 'semantic-ui-react'
+import {Segment, Grid, Icon, Header} from 'semantic-ui-react'
 import {Trip} from "../../../app/models/trip";
 import {format} from "date-fns";
 
@@ -12,8 +12,13 @@ export default observer(function TripDetailedInfo({trip}: Props) {
 
     const tripDescription = `Surf trip to ${trip.city}! There are limited spots. We are going to be working, and surfng, and exploring nightlife on weekend nights.`
     return (
-        <Segment.Group> 
+        <Segment.Group>
             <Segment attached>
+                 <Header
+                      size='large'
+                      content="THE TRIP"
+                      style={{color: 'grey'}}
+                    /> 
                 <Grid verticalAlign='middle'>
                     <Grid.Column width={1}>
                         <Icon name='marker' size='large' color='teal'/>

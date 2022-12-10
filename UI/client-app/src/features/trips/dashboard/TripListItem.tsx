@@ -3,7 +3,6 @@ import { Button, Icon, Item, Label, Segment } from 'semantic-ui-react';
 import { Trip } from '../../../app/models/trip';
 import { format } from "date-fns";
 import TripListItemAttendee from './TripListItemAttendee';
-import { useStore } from '../../../app/stores/store';
 
 interface Props{
     trip: Trip

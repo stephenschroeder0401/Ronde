@@ -3,7 +3,7 @@ import { request } from 'http';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import { Profile } from '../models/profile';
-import { Trip, TripFormValues } from '../models/trip';
+import { Spot, Trip, TripFormValues } from '../models/trip';
 import { User, UserFormValues } from '../models/user';
 import { store } from '../stores/store';
 
@@ -71,7 +71,9 @@ const Trips = {
     create: (trip: TripFormValues) => requests.post<number>('/trips', trip),
     update: (trip: TripFormValues) => requests.put<number>(`/trips/${trip.id}`, trip),
     delete: (id: number) => requests.del<void>(`/trips/${id}`),
-    attend: (id: number, statusId: number) => requests.post<void>(`/trips/${id}/attend/${statusId}`, {})
+    attend: (id: number, statusId: number) => requests.post<void>(`/trips/${id}/attend/${statusId}`, {}),
+    spots: (id: number) => requests.get<Spot[]>(`/trips/${id}/spots`)
+
 }
 
 const Account ={

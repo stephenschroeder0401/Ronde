@@ -16,6 +16,10 @@ namespace Persistance
         public DbSet<Photo> Photos { get; set; }
         public DbSet<UserFollowing> UserFollowings { get; set; }
         public DbSet<AttendeeStatus> AttendeeStatus { get; set; }
+        public DbSet<SpotPrice> SpotPrices { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Stint> Stints { get; set; }
+        public DbSet<Spot> Spots { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,6 +49,9 @@ namespace Persistance
                     .HasForeignKey(o => o.TargetId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+
+            builder.Entity<SpotPrice>().Property(sp => sp.Amount).HasPrecision(10, 2);
+            builder.Entity<Trip>().Property(sp => sp.Cost).HasPrecision(10, 2);
         }
     }
 }
