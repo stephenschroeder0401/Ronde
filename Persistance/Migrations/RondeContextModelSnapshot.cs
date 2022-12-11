@@ -131,6 +131,60 @@ namespace Persistance.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("Domain.Reservation", b =>
+                {
+                    b.Property<int>("ReservationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Cost")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int?>("SpotId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TripId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReservationId");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("SpotId");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("Reservation");
+                });
+
+            modelBuilder.Entity("Domain.ReservationStint", b =>
+                {
+                    b.Property<int>("RsservationStintId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StintId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RsservationStintId");
+
+                    b.HasIndex("StintId");
+
+                    b.HasIndex("ReservationId", "RsservationStintId")
+                        .IsUnique();
+
+                    b.ToTable("ReservationStint");
+                });
+
             modelBuilder.Entity("Domain.Room", b =>
                 {
                     b.Property<int>("RoomId")
@@ -153,7 +207,7 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Spot", b =>
                 {
-                    b.Property<int>("TripSpotId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -170,32 +224,40 @@ namespace Persistance.Migrations
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
-                    b.HasKey("TripSpotId");
+                    b.Property<int?>("TripId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("TripId");
 
                     b.ToTable("Spots");
                 });
 
             modelBuilder.Entity("Domain.SpotPrice", b =>
                 {
-                    b.Property<decimal>("PriceId")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PriceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int?>("SpotId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("StintId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TripSpotId")
-                        .HasColumnType("int");
-
                     b.HasKey("PriceId");
 
-                    b.HasIndex("StintId");
+                    b.HasIndex("SpotId");
 
-                    b.HasIndex("TripSpotId");
+                    b.HasIndex("StintId");
 
                     b.ToTable("SpotPrices");
                 });
@@ -237,7 +299,8 @@ namespace Persistance.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -447,6 +510,46 @@ namespace Persistance.Migrations
                         .HasForeignKey("AppUserId");
                 });
 
+            modelBuilder.Entity("Domain.Reservation", b =>
+                {
+                    b.HasOne("Domain.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Domain.Spot", "Spot")
+                        .WithMany()
+                        .HasForeignKey("SpotId");
+
+                    b.HasOne("Domain.Trip", "Trip")
+                        .WithMany()
+                        .HasForeignKey("TripId");
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Spot");
+
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("Domain.ReservationStint", b =>
+                {
+                    b.HasOne("Domain.Reservation", "Reservation")
+                        .WithMany("Stints")
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Stint", "Stint")
+                        .WithMany("Reservations")
+                        .HasForeignKey("StintId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
+
+                    b.Navigation("Stint");
+                });
+
             modelBuilder.Entity("Domain.Room", b =>
                 {
                     b.HasOne("Domain.Trip", "Trip")
@@ -462,22 +565,28 @@ namespace Persistance.Migrations
                         .WithMany()
                         .HasForeignKey("RoomId");
 
+                    b.HasOne("Domain.Trip", "Trip")
+                        .WithMany()
+                        .HasForeignKey("TripId");
+
                     b.Navigation("Room");
+
+                    b.Navigation("Trip");
                 });
 
             modelBuilder.Entity("Domain.SpotPrice", b =>
                 {
+                    b.HasOne("Domain.Spot", "Spot")
+                        .WithMany()
+                        .HasForeignKey("SpotId");
+
                     b.HasOne("Domain.Stint", "Stint")
                         .WithMany()
                         .HasForeignKey("StintId");
 
-                    b.HasOne("Domain.Spot", "TripSpot")
-                        .WithMany()
-                        .HasForeignKey("TripSpotId");
+                    b.Navigation("Spot");
 
                     b.Navigation("Stint");
-
-                    b.Navigation("TripSpot");
                 });
 
             modelBuilder.Entity("Domain.Stint", b =>
@@ -591,6 +700,16 @@ namespace Persistance.Migrations
                     b.Navigation("Photos");
 
                     b.Navigation("Trips");
+                });
+
+            modelBuilder.Entity("Domain.Reservation", b =>
+                {
+                    b.Navigation("Stints");
+                });
+
+            modelBuilder.Entity("Domain.Stint", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("Domain.Trip", b =>
