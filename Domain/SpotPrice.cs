@@ -10,7 +10,7 @@ namespace Domain
         [Key]
         public int PriceId { get; set; }
         public Stint Stint  { get; set; }
-        public Spot TripSpot { get; set; }
+        public Spot Spot { get; set; }
         public decimal Amount { get; set; }
     }
 }

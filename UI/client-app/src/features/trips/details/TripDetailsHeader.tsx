@@ -27,31 +27,38 @@ export default observer (function TripDetailedHeader({trip}: Props) {
     const [modalBody, setModalBody] = useState('');
     const [modalHeader, setModalHeader] = useState('');
     const [photoIdx, setPhotoIdx] = useState(0);
+    const [tripRequestStatus, setTripRequestStatus] = useState(0);
     
     const images = ['..//assets/categoryImages/nosara2.jpg','..//assets/categoryImages/travel.jpg','..//assets/categoryImages/nosara1.jpg']
 
-    function handleAttendance (status: number){
+    function handleAttendance (requestStatus: number){
         
-        switch (status) { 
-        case 1 : 
+        switch (requestStatus) {
+        case 0:
+            setModalHeader("Cancel Request");
+            setModalBody("This will notify the host that you would like to join this trip. "+
+            "Payment will not be required until your request has been accepted. Would you like to proceed?");
+            break;
+        case 1: 
             setModalHeader("Request To Join Trip");
             setModalBody("This will notify the host that you would like to join this trip. "+
             "Payment will not be required until your request has been accepted. Would you like to proceed?");
-            setModalOpen(true);
+            break;
         }
-        updateAttendance(status);
+
+        setTripRequestStatus(requestStatus);
+        setModalOpen(true);
     }
 
-    function handleCloseModal(e: Event){
-        console.log(e);
+    function confirmAttendance (){
+        updateAttendance(tripRequestStatus);
         setModalOpen(false);
-
     }
 
 
     return (
         <Segment.Group>
-            <AttendanceModal body={modalBody} header={modalHeader} isOpen={modalOpen} closeModal={(e: Event)=> handleCloseModal(e)}/>
+            <AttendanceModal body={modalBody} header={modalHeader} isOpen={modalOpen} confirm={() => confirmAttendance()} closeModal={()=> setModalOpen(false)}/>
             <Segment>
             
                 {trip.userStatus == 2 &&

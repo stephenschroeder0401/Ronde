@@ -50,8 +50,24 @@ namespace Persistance
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            builder.Entity<ReservationStint>(rs =>
+            {
+                rs.HasIndex(r => new { r.ReservationId, r.RsservationStintId }).IsUnique();
+
+                rs.HasOne(res => res.Reservation)
+                .WithMany(r => r.Stints)
+                .HasForeignKey(fr => fr.ReservationId);
+
+                rs.HasOne(res => res.Stint)
+               .WithMany(r => r.Reservations)
+               .HasForeignKey(fs => fs.StintId);
+
+
+            });
+
             builder.Entity<SpotPrice>().Property(sp => sp.Amount).HasPrecision(10, 2);
             builder.Entity<Trip>().Property(sp => sp.Cost).HasPrecision(10, 2);
+            builder.Entity<Reservation>().Property(r => r.Cost).HasPrecision(10, 2);
         }
     }
 }

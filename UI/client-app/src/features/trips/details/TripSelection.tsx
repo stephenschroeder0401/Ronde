@@ -22,17 +22,13 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
     const [totalPrice, setTotalPrice] = useState(0.00);
 
     useEffect(() => {
-
-        console.log("EFFECT");
-        console.log(selectedSpot);
-        console.log(activeStints);
         
         let spotPrices = prices?.filter(p => String(p.spotId) === selectedSpot);
 
         console.log(spotPrices);
 
         let total = spotPrices!.reduce((totalPrice, spotPrice)  => {
-            if(activeStints.includes(String(spotPrice.stintId)))
+            if(activeStints.includes(String(spotPrice.id)))
                 return totalPrice + spotPrice.price;
             else
                 return totalPrice;
@@ -65,13 +61,13 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
                     let days = moment(stint.endDate).diff(moment(stint.startDate), 'days');
 
                     return(
-                        <Menu.Item name={String(stint.stintId)}  
-                            active={activeStints.includes(String(stint.stintId))}
+                        <Menu.Item name={String(stint.id)}  
+                            active={activeStints.includes(String(stint.id))}
                             onClick={() => 
-                                {activeStints.includes(String(stint.stintId)) ? 
-                                setActiveStints(activeStints.filter(s => s != String(stint.stintId))) 
-                                : setActiveStints([...activeStints, String(stint.stintId)])}}>
-                            <Header as='h4'>{formatDateRange}<Label color={activeStints?.includes(String(stint.stintId)) ? "teal" : "grey"} size='medium' content= {days + " nights"}></Label></Header>
+                                {activeStints.includes(String(stint.id)) ? 
+                                setActiveStints(activeStints.filter(s => s != String(stint.id))) 
+                                : setActiveStints([...activeStints, String(stint.id)])}}>
+                            <Header as='h4'>{formatDateRange}<Label color={activeStints?.includes(String(stint.id)) ? "teal" : "grey"} size='medium' content= {days + " nights"}></Label></Header>
                         </Menu.Item>)})}
                     </Menu>
             </Segment>
@@ -84,9 +80,9 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
 
                     {spots!.map(spot => {
                         return(
-                        <Menu.Item onClick={() => {setSelectedSpot(String(spot.spotId))}}
-                            active={selectedSpot == String(spot.spotId)}
-                            name={String(spot.spotId)} style={{display: 'flex'}}>
+                        <Menu.Item onClick={() => {setSelectedSpot(String(spot.id))}}
+                            active={selectedSpot == String(spot.id)}
+                            name={String(spot.id)} style={{display: 'flex'}}>
                             <span style={{flexDirection: 'column'}}>
                             <Header size='large'>
                                 TEST

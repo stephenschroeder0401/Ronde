@@ -53,7 +53,7 @@ export class TripFormValues{
 } 
 
 export interface Spot{
-     spotId: number;
+     id: number;
      title: string;
      description: string;
      isPrivate: boolean;
@@ -62,14 +62,14 @@ export interface Spot{
 }
 
 export interface Stint{
-    stintId: number;
+    id: number;
     startDate: Date;
     endDate: Date;
 }
 
 
 export interface Price{
-    priceId: number;
+    id: number;
     stintId: number;
     spotId: number;
     price: number;

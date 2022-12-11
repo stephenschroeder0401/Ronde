@@ -9,8 +9,10 @@ namespace Domain
     {
         [Key]
         public int ReservationId { get; set; }
+        public Trip Trip { get; set; }
         public AppUser AppUser { get; set; }
         public Spot Spot { get; set; }
-        public Decimal Cost { get; set; }
+        public decimal Cost { get; set; }
+        public ICollection<ReservationStint> Stints { get; set; }
     }
 }

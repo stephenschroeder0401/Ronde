@@ -1,22 +1,24 @@
 import React, {  useState } from 'react'
-import { Modal } from 'semantic-ui-react'
+import { Confirm, Modal } from 'semantic-ui-react'
 
 interface Props{
     isOpen: boolean;
     closeModal: Function;
     header: string;
     body: string;
+    confirm: Function;
 
 }
 
 export default function AttendanceModal(props: Props) {
 
-let {isOpen, closeModal, header, body} = props
+let {isOpen, closeModal, header, body, confirm} = props
   
 return (
-    <Modal
+    <Confirm
+      onConfirm = {() => confirm()}
       open={isOpen}
-      onActionClick={(e) => closeModal(e)} 
+      onCancel={() => closeModal()} 
       header={header}
       content={body}
       actions={['Cancel', { key: 'done', content: 'Confirm', positive: true }]}

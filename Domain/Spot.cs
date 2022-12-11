@@ -8,8 +8,9 @@ namespace Domain
     public class Spot
     {
         [Key]
-        public int TripSpotId { get; set; }
+        public int Id { get; set; }
         public string Description { get; set; }
+        public Trip Trip { get; set; }
         public Room Room { get; set; }
         public bool IsPrivate { get; set; }
         public int MaxGuests { get; set; } = 1;
