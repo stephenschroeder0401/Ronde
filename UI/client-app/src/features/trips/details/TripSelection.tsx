@@ -26,17 +26,16 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
         let spotPrices = prices?.filter(p => String(p.spotId) === selectedSpot);
 
         console.log(spotPrices);
+        console.log(selectedSpot);
 
         let total = spotPrices!.reduce((totalPrice, spotPrice)  => {
-            if(activeStints.includes(String(spotPrice.id)))
+            if(activeStints.includes(String(spotPrice.stintId)))
                 return totalPrice + spotPrice.price;
             else
                 return totalPrice;
             }
             , 0);
 
-        console.log(total);    
-        
         setTotalPrice(total);
 
     }, [selectedSpot, activeStints])

@@ -17,6 +17,7 @@ namespace Domain
         public bool IsCancelled { get; set; }
         public decimal Cost { get; set; }
         public ICollection<TripAttendee> Attendees { get; set; } = new List<TripAttendee>();
+        public ICollection<Reservation> Reservations { get; set; }
 
     }
 }
