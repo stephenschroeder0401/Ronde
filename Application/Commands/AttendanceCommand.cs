@@ -10,7 +10,7 @@ namespace Application.Commands
     {
         public int Id { get; set; }
 
-        public int AttendeeStatusId { get; set; }
+        public int ReservationStatusId { get; set; }
 
     }
 }

@@ -41,14 +41,14 @@ namespace Application.Handlers
 
             var attendance = trip.Attendees.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
 
-            if (request.AttendeeStatusId == 0 && attendance != null)
+            if (request.ReservationStatusId == 0 && attendance != null)
             {
                 trip.Attendees.Remove(attendance);
             }
             else
             {
 
-                var status = await _context.AttendeeStatus.FirstOrDefaultAsync(x => x.AttendeeStatusId == request.AttendeeStatusId);
+                var status = await _context.ReservationStatus.FirstOrDefaultAsync(x => x.ReservationStatusId == request.ReservationStatusId);
 
 
                 if (attendance != null && hostUsername == user.UserName)
@@ -58,7 +58,7 @@ namespace Application.Handlers
 
                 if (attendance != null && hostUsername != user.UserName)
                 {
-                    attendance.AttendeeStatus = status;
+                    attendance.ReservationStatus = status;
                 }
                 else if (attendance == null)
                 {
@@ -68,7 +68,7 @@ namespace Application.Handlers
                         Trip = trip,
                         TripId = trip.Id,
                         IsHost = false,
-                        AttendeeStatus = status,
+                        ReservationStatus = status,
                     };
                     await _context.TripAttendees.AddAsync(attendance);
                 }

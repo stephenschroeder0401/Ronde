@@ -60,7 +60,7 @@ namespace API.Controllers
         [HttpPost("{id}/attend/{statusId}")]
         public async Task<IActionResult> Attend(int id, int statusId)
         {
-            return HandleResult(await Mediator.Send(new AttendanceCommand { Id = id, AttendeeStatusId = statusId}));
+            return HandleResult(await Mediator.Send(new AttendanceCommand { Id = id, ReservationStatusId = statusId}));
         }
 
       /*  [HttpGet("{id}/spots")]

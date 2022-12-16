@@ -2,59 +2,59 @@
 
 namespace Persistance.Migrations
 {
-    public partial class AddAttendeeStatus : Migration
+    public partial class AddReservationStatus : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "AttendeeStatusId",
+                name: "ReservationStatusId",
                 table: "TripAttendees",
                 type: "int",
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "AttendeeStatus",
+                name: "ReservationStatus",
                 columns: table => new
                 {
-                    AttendeeStatusId = table.Column<int>(type: "int", nullable: false)
+                    ReservationStatusId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AttendeeStatus", x => x.AttendeeStatusId);
+                    table.PrimaryKey("PK_ReservationStatus", x => x.ReservationStatusId);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TripAttendees_AttendeeStatusId",
+                name: "IX_TripAttendees_ReservationStatusId",
                 table: "TripAttendees",
-                column: "AttendeeStatusId");
+                column: "ReservationStatusId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_TripAttendees_AttendeeStatus_AttendeeStatusId",
+                name: "FK_TripAttendees_ReservationStatus_ReservationStatusId",
                 table: "TripAttendees",
-                column: "AttendeeStatusId",
-                principalTable: "AttendeeStatus",
-                principalColumn: "AttendeeStatusId",
+                column: "ReservationStatusId",
+                principalTable: "ReservationStatus",
+                principalColumn: "ReservationStatusId",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.InsertData(
-               table: "AttendeeStatus",
+               table: "ReservationStatus",
                columns: new[] { "Status" },
                values: new object[] {"Interested"});
             
             migrationBuilder.InsertData(
-               table: "AttendeeStatus",
+               table: "ReservationStatus",
                columns: new[] { "Status" },
                values: new object[] { "Accepted" });
 
             migrationBuilder.InsertData(
-               table: "AttendeeStatus",
+               table: "ReservationStatus",
                columns: new[] { "Status" },
                values: new object[] { "Denied" });
 
             migrationBuilder.InsertData(
-               table: "AttendeeStatus",
+               table: "ReservationStatus",
                columns: new[] { "Status" },
                values: new object[] { "Paid" });
         }
@@ -62,18 +62,18 @@ namespace Persistance.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_TripAttendees_AttendeeStatus_AttendeeStatusId",
+                name: "FK_TripAttendees_ReservationStatus_ReservationStatusId",
                 table: "TripAttendees");
 
             migrationBuilder.DropTable(
-                name: "AttendeeStatus");
+                name: "ReservationStatus");
 
             migrationBuilder.DropIndex(
-                name: "IX_TripAttendees_AttendeeStatusId",
+                name: "IX_TripAttendees_ReservationStatusId",
                 table: "TripAttendees");
 
             migrationBuilder.DropColumn(
-                name: "AttendeeStatusId",
+                name: "ReservationStatusId",
                 table: "TripAttendees");
         }
     }

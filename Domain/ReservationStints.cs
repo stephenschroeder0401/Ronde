@@ -8,7 +8,7 @@ namespace Domain
     public class ReservationStint
     {
         [Key]
-        public int RsservationStintId { get; set; }
+        public int ReservationStintId { get; set; }
         public int ReservationId { get; set; }
         public Reservation Reservation { get; set; }
         public int StintId { get; set; }

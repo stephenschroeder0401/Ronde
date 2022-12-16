@@ -15,7 +15,7 @@ namespace Persistance
         public DbSet<TripAttendee> TripAttendees { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<UserFollowing> UserFollowings { get; set; }
-        public DbSet<AttendeeStatus> AttendeeStatus { get; set; }
+        public DbSet<ReservationStatus> ReservationStatus { get; set; }
         public DbSet<SpotPrice> SpotPrices { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Stint> Stints { get; set; }
@@ -32,7 +32,7 @@ namespace Persistance
                 .WithMany(a => a.Trips)
                 .HasForeignKey(aa => aa.AppUserId);
 
-                t.HasOne(s => s.AttendeeStatus);
+                t.HasOne(s => s.ReservationStatus);
                 });
 
             builder.Entity<UserFollowing>(b =>
@@ -52,7 +52,7 @@ namespace Persistance
 
             builder.Entity<ReservationStint>(rs =>
             {
-                rs.HasIndex(r => new { r.ReservationId, r.RsservationStintId }).IsUnique();
+                rs.HasIndex(r => new { r.ReservationId, r.ReservationStintId }).IsUnique();
 
                 rs.HasOne(res => res.Reservation)
                 .WithMany(r => r.Stints)

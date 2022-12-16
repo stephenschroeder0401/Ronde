@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistance;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(RondeContext))]
-    partial class RondeContextModelSnapshot : ModelSnapshot
+    [Migration("20221216031958_ReservationStatus")]
+    partial class ReservationStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,6 +92,21 @@ namespace Persistance.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Domain.ReservationStatus", b =>
+                {
+                    b.Property<int>("ReservationStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReservationStatusId");
+
+                    b.ToTable("ReservationStatus");
+                });
+
             modelBuilder.Entity("Domain.Photo", b =>
                 {
                     b.Property<int>("PhotoId")
@@ -130,10 +147,10 @@ namespace Persistance.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<int?>("ReservationStatusId")
+                    b.Property<int?>("SpotId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SpotId")
+                    b.Property<int?>("StatusReservationStatusId")
                         .HasColumnType("int");
 
                     b.Property<int?>("TripId")
@@ -143,33 +160,18 @@ namespace Persistance.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("ReservationStatusId");
-
                     b.HasIndex("SpotId");
+
+                    b.HasIndex("StatusReservationStatusId");
 
                     b.HasIndex("TripId");
 
                     b.ToTable("Reservation");
                 });
 
-            modelBuilder.Entity("Domain.ReservationStatus", b =>
-                {
-                    b.Property<int>("ReservationStatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ReservationStatusId");
-
-                    b.ToTable("ReservationStatus");
-                });
-
             modelBuilder.Entity("Domain.ReservationStint", b =>
                 {
-                    b.Property<int>("ReservationStintId")
+                    b.Property<int>("RsservationStintId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -180,11 +182,11 @@ namespace Persistance.Migrations
                     b.Property<int>("StintId")
                         .HasColumnType("int");
 
-                    b.HasKey("ReservationStintId");
+                    b.HasKey("RsservationStintId");
 
                     b.HasIndex("StintId");
 
-                    b.HasIndex("ReservationId", "ReservationStintId")
+                    b.HasIndex("ReservationId", "RsservationStintId")
                         .IsUnique();
 
                     b.ToTable("ReservationStint");
@@ -338,11 +340,11 @@ namespace Persistance.Migrations
                     b.Property<int>("TripId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsHost")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("ReservationStatusId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsHost")
+                        .HasColumnType("bit");
 
                     b.HasKey("AppUserId", "TripId");
 
@@ -521,13 +523,13 @@ namespace Persistance.Migrations
                         .WithMany()
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("Domain.ReservationStatus", "ReservationStatus")
-                        .WithMany()
-                        .HasForeignKey("ReservationStatusId");
-
                     b.HasOne("Domain.Spot", "Spot")
                         .WithMany()
                         .HasForeignKey("SpotId");
+
+                    b.HasOne("Domain.ReservationStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusReservationStatusId");
 
                     b.HasOne("Domain.Trip", null)
                         .WithMany("Reservations")
@@ -535,9 +537,9 @@ namespace Persistance.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("ReservationStatus");
-
                     b.Navigation("Spot");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("Domain.ReservationStint", b =>

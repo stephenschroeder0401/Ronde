@@ -32,7 +32,7 @@ namespace Application.Core
                 .ForMember(d => d.FollowingCount, o => o.MapFrom(s => s.AppUser.Followings.Count()))
                 .ForMember(d => d.Following,
                     o => o.MapFrom(s => s.AppUser.Followers.Any(x => x.Observer.UserName == currentUsername)))
-                .ForMember(d => d.Status, o => o.MapFrom(s => s.AttendeeStatus.AttendeeStatusId));
+                .ForMember(d => d.Status, o => o.MapFrom(s => s.ReservationStatus.ReservationStatusId));
 
             CreateMap<AppUser, Profiles.Profile>()
                 .ForMember(d => d.UserId, o => o.MapFrom(s => s.Id))

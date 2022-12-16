@@ -92,9 +92,9 @@ namespace Persistance.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Domain.AttendeeStatus", b =>
+            modelBuilder.Entity("Domain.ReservationStatus", b =>
                 {
-                    b.Property<int>("AttendeeStatusId")
+                    b.Property<int>("ReservationStatusId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -102,9 +102,9 @@ namespace Persistance.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AttendeeStatusId");
+                    b.HasKey("ReservationStatusId");
 
-                    b.ToTable("AttendeeStatus");
+                    b.ToTable("ReservationStatus");
                 });
 
             modelBuilder.Entity("Domain.Photo", b =>
@@ -335,7 +335,7 @@ namespace Persistance.Migrations
                     b.Property<int>("TripId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AttendeeStatusId")
+                    b.Property<int?>("ReservationStatusId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsHost")
@@ -343,7 +343,7 @@ namespace Persistance.Migrations
 
                     b.HasKey("AppUserId", "TripId");
 
-                    b.HasIndex("AttendeeStatusId");
+                    b.HasIndex("ReservationStatusId");
 
                     b.HasIndex("TripId");
 
@@ -608,9 +608,9 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.AttendeeStatus", "AttendeeStatus")
+                    b.HasOne("Domain.ReservationStatus", "ReservationStatus")
                         .WithMany()
-                        .HasForeignKey("AttendeeStatusId");
+                        .HasForeignKey("ReservationStatusId");
 
                     b.HasOne("Domain.Trip", "Trip")
                         .WithMany("Attendees")
@@ -620,7 +620,7 @@ namespace Persistance.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("AttendeeStatus");
+                    b.Navigation("ReservationStatus");
 
                     b.Navigation("Trip");
                 });

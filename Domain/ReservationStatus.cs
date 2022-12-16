@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Domain
 {
-    public class AttendeeStatus
+    public class ReservationStatus
     {
         [Key]
-        public int AttendeeStatusId { get; set; }
+        public int ReservationStatusId { get; set; }
         public string Status { get; set; }
     }
 }

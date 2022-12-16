@@ -11,6 +11,6 @@ namespace Domain
         public int TripId { get; set; }
         public Trip Trip { get; set; }
         public bool IsHost { get; set; }
-        public AttendeeStatus AttendeeStatus { get; set; }
+        public ReservationStatus ReservationStatus { get; set; }
     }
 }
