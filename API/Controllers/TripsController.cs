@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using API.DTOs;
 using Application.Commands;
+using Application.DTOs;
 using Application.Handlers;
 using Application.Queries;
 using Domain;
@@ -57,6 +58,13 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new DeleteTripCommand { Id = id }));
         }
 
+        [HttpPost("{id}/reservation/")]
+        public async Task<IActionResult> CreateReservation(int id, ReservationRequest reservation)
+        {
+            return HandleResult(await Mediator.Send(new ReservationCommand { TripId = id, ReservationRequest = reservation}));
+        }
+
+        //this can go 
         [HttpPost("{id}/attend/{statusId}")]
         public async Task<IActionResult> Attend(int id, int statusId)
         {

@@ -33,8 +33,8 @@ namespace Application.Handlers
 
             return trip.Id == 0 ? AddTrip(trip).Result : EditTrip(trip).Result;
         }
-
         private async Task<Result<int>> EditTrip(Trip updatedTrip)
+
         {
             var trip = await _context.Trip.FindAsync(updatedTrip.Id);
 
