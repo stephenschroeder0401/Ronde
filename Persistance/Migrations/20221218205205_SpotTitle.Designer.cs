@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistance;
 
 namespace Persistance.Migrations
 {
     [DbContext(typeof(RondeContext))]
-    partial class RondeContextModelSnapshot : ModelSnapshot
+    [Migration("20221218205205_SpotTitle")]
+    partial class SpotTitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -560,7 +562,7 @@ namespace Persistance.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Stint", "Stint")
-                        .WithMany()
+                        .WithMany("Reservations")
                         .HasForeignKey("StintId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -586,7 +588,7 @@ namespace Persistance.Migrations
                         .HasForeignKey("RoomId");
 
                     b.HasOne("Domain.Trip", "Trip")
-                        .WithMany("Spots")
+                        .WithMany()
                         .HasForeignKey("TripId");
 
                     b.Navigation("Room");
@@ -612,7 +614,7 @@ namespace Persistance.Migrations
             modelBuilder.Entity("Domain.Stint", b =>
                 {
                     b.HasOne("Domain.Trip", "Trip")
-                        .WithMany("Stints")
+                        .WithMany()
                         .HasForeignKey("TripId");
 
                     b.Navigation("Trip");
@@ -727,15 +729,16 @@ namespace Persistance.Migrations
                     b.Navigation("Stints");
                 });
 
+            modelBuilder.Entity("Domain.Stint", b =>
+                {
+                    b.Navigation("Reservations");
+                });
+
             modelBuilder.Entity("Domain.Trip", b =>
                 {
                     b.Navigation("Attendees");
 
                     b.Navigation("Reservations");
-
-                    b.Navigation("Spots");
-
-                    b.Navigation("Stints");
                 });
 #pragma warning restore 612, 618
         }

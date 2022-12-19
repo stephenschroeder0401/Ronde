@@ -30,7 +30,7 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
 
         let total = spotPrices!.reduce((totalPrice, spotPrice)  => {
             if(activeStints.includes(String(spotPrice.stintId)))
-                return totalPrice + spotPrice.price;
+                return totalPrice + spotPrice.amount;
             else
                 return totalPrice;
             }
@@ -60,13 +60,13 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
                     let days = moment(stint.endDate).diff(moment(stint.startDate), 'days');
 
                     return(
-                        <Menu.Item name={String(stint.id)}  
-                            active={activeStints.includes(String(stint.id))}
+                        <Menu.Item name={String(stint.stintId)}  
+                            active={activeStints.includes(String(stint.stintId))}
                             onClick={() => 
-                                {activeStints.includes(String(stint.id)) ? 
-                                setActiveStints(activeStints.filter(s => s != String(stint.id))) 
-                                : setActiveStints([...activeStints, String(stint.id)])}}>
-                            <Header as='h4'>{formatDateRange}<Label color={activeStints?.includes(String(stint.id)) ? "teal" : "grey"} size='medium' content= {days + " nights"}></Label></Header>
+                                {activeStints.includes(String(stint.stintId)) ? 
+                                setActiveStints(activeStints.filter(s => s != String(stint.stintId))) 
+                                : setActiveStints([...activeStints, String(stint.stintId)])}}>
+                            <Header as='h4'>{formatDateRange}<Label color={activeStints?.includes(String(stint.stintId)) ? "teal" : "grey"} size='medium' content= {days + " nights"}></Label></Header>
                         </Menu.Item>)})}
                     </Menu>
             </Segment>
@@ -84,7 +84,7 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
                             name={String(spot.id)} style={{display: 'flex'}}>
                             <span style={{flexDirection: 'column'}}>
                             <Header size='large'>
-                                TEST
+                                {spot.title}
                             </Header>
                             <Header size='small' style={{marginRight: 'auto'}}>
                                 {spot.description}

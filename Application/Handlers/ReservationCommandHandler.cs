@@ -43,7 +43,7 @@ namespace Application.Handlers
 
             var hostUsername = trip.Attendees.FirstOrDefault(x => x.IsHost)?.AppUser?.UserName;
 
-            var reservation = trip.Reservations.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
+            var reservation = trip.Reservations?.FirstOrDefault(x => x.AppUser.UserName == user.UserName);
 
             //Check if this is a cancellation
             if (request.ReservationRequest.ReservationStatusId == 0 && reservation != null)
@@ -63,6 +63,7 @@ namespace Application.Handlers
                 else if (reservation == null)
                 {
                     var stints = await _context.Stints.Where(s => request.ReservationRequest.StintIds.Contains(s.StintId)).ToListAsync();
+                    var resStints = new List<ReservationStint>();
 
                     reservation = new Reservation
                     {
@@ -71,17 +72,30 @@ namespace Application.Handlers
                         TripId = trip.Id,
                         ReservationStatus = status,
                         Cost = request.ReservationRequest.Cost,
-                        SpotId = request.ReservationRequest.SpotId,
-                        Stints = (ICollection<ReservationStint>)stints
+                        SpotId = request.ReservationRequest.SpotId
                     };
-                    trip.Reservations.Add(reservation);
+
+                    foreach (var stint in stints) 
+                    {
+                        resStints.Add(new ReservationStint()
+                        {
+                            Reservation = reservation,
+                            Stint = stint
+                        });
+                    }
+
+                    reservation.Stints = resStints;
+
+                    if (trip.Reservations == null)
+                        trip.Reservations = new List<Reservation>() { reservation };
+                    else
+                        trip.Reservations.Add(reservation);
                 }
             }
 
             var result = await _context.SaveChangesAsync() > 0;
 
-
-            return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem updating attendance");
+            return result ? Result<Unit>.Success(Unit.Value) : Result<Unit>.Failure("Problem creating reservation");
         }
     }
 }

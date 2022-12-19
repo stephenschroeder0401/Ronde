@@ -28,20 +28,20 @@ namespace Infrastructure.Security
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IsHostRequirement requirement)
         {
-            var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (userId == null) return Task.CompletedTask;
+            //if (userId == null) return Task.CompletedTask;
 
-            var tripId = Int32.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
-                .SingleOrDefault(x => x.Key == "id").Value?.ToString());
+            //var tripId = Int32.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
+            //    .SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
-            var attendee = _dbContext.TripAttendees
-                .AsNoTracking()
-                .SingleOrDefaultAsync(x => x.AppUserId == userId && x.TripId == tripId).Result;
+            //var attendee = _dbContext.Reservation
+            //    .AsNoTracking()
+            //    .SingleOrDefaultAsync(x => x.AppUserId == userId && x.TripId == tripId).Result;
 
-            if (attendee == null) return Task.CompletedTask;
+            //if (attendee == null) return Task.CompletedTask;
 
-            if (attendee.IsHost) context.Succeed(requirement);
+            //if (attendee.IsHost) context.Succeed(requirement);
 
             return Task.CompletedTask;
 

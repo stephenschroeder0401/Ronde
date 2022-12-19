@@ -16,6 +16,7 @@ namespace Persistance
         public DbSet<Photo> Photos { get; set; }
         public DbSet<UserFollowing> UserFollowings { get; set; }
         public DbSet<ReservationStatus> ReservationStatus { get; set; }
+        public DbSet<ReservationStatus> Reservations { get; set; }
         public DbSet<SpotPrice> SpotPrices { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Stint> Stints { get; set; }
@@ -57,11 +58,6 @@ namespace Persistance
                 rs.HasOne(res => res.Reservation)
                 .WithMany(r => r.Stints)
                 .HasForeignKey(fr => fr.ReservationId);
-
-                rs.HasOne(res => res.Stint)
-               .WithMany(r => r.Reservations)
-               .HasForeignKey(fs => fs.StintId);
-
 
             });
 

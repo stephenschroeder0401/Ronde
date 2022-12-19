@@ -62,7 +62,7 @@ export interface Spot{
 }
 
 export interface Stint{
-    id: number;
+    stintId: number;
     startDate: Date;
     endDate: Date;
 }
@@ -72,5 +72,5 @@ export interface Price{
     id: number;
     stintId: number;
     spotId: number;
-    price: number;
+    amount: number;
 }

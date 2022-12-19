@@ -18,6 +18,8 @@ namespace Domain
         public decimal Cost { get; set; }
         public ICollection<TripAttendee> Attendees { get; set; } = new List<TripAttendee>();
         public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<Spot> Spots { get; set; }
+        public ICollection<Stint> Stints { get; set; }
 
     }
 }
