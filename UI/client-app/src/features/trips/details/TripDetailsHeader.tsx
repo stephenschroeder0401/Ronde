@@ -9,6 +9,8 @@ import {format} from "date-fns";
 import { useStore } from '../../../app/stores/store';
 import Lightbox from 'react-image-lightbox';
 import "react-image-lightbox/style.css";
+import TripStore from '../../../app/stores/tripStore';
+import { createReadStream } from 'fs';
 
 
 const tripImageStyle = {
@@ -21,7 +23,7 @@ interface Props {
 
 
 export default observer (function TripDetailedHeader({trip}: Props) {
-    const {tripStore: {updateAttendance, loading, cancelTripToggle} } = useStore();
+    const {tripStore: {selectedTrip, createReservation, loading, cancelTripToggle}, reservationStore } = useStore();
     const [photosOpen, setPhotosOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalBody, setModalBody] = useState('');
@@ -51,7 +53,10 @@ export default observer (function TripDetailedHeader({trip}: Props) {
     }
 
     function confirmAttendance (){
-        updateAttendance(tripRequestStatus);
+        console.log("confirm!");
+        console.log(reservationStore.userReservation);
+        reservationStore.userReservation.reservationStatusId = tripRequestStatus;
+        createReservation(reservationStore.userReservation, selectedTrip!.id);
         setModalOpen(false);
     }
 

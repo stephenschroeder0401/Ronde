@@ -1,12 +1,13 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react'
 import {Segment, Grid, Icon, Header, Menu, Item, Label, Checkbox, Image} from 'semantic-ui-react'
-import {Trip} from "../../../app/models/trip";
+import {Reservation, Trip} from "../../../app/models/trip";
 import {format} from "date-fns";
 import { string } from 'yup/lib/locale';
 import { style } from '@mui/system';
 import moment from 'moment';
 import { TripAttendee } from '../../../app/models/profile';
+import { useStore } from '../../../app/stores/store';
 
 
 
@@ -20,6 +21,8 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
     const [selectedSpot, setSelectedSpot] = useState<string>();
     const [activeStints, setActiveStints] = useState<string[]>([]);
     const [totalPrice, setTotalPrice] = useState(0.00);
+    const {reservationStore} = useStore();
+
 
     useEffect(() => {
         
@@ -37,6 +40,10 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
             , 0);
 
         setTotalPrice(total);
+        reservationStore.userReservation.cost = total;
+        reservationStore.userReservation.stintIds = activeStints;
+        reservationStore.userReservation.spotId = selectedSpot;
+
 
     }, [selectedSpot, activeStints])
   

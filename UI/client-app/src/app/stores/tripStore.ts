@@ -1,6 +1,6 @@
 import { action, makeAutoObservable, makeObservable, observable, runInAction} from "mobx";
 import agent from "../api/agent";
-import { Trip, TripFormValues } from "../models/trip";
+import { Reservation, Trip, TripFormValues } from "../models/trip";
 import {format} from "date-fns";
 import { store } from "./store";
 import UserStore from "./userStore";
@@ -117,6 +117,26 @@ export default class TripStore{
             this.setTrip(newTrip);
             runInAction(()=>{
                 this.selectedTrip = newTrip;
+            });
+            return newId;
+        }
+        catch(error){
+            console.log(error);
+            runInAction(() =>{
+                this.loading = false;
+            });
+        }
+    }
+
+    createReservation = async (reservation: Reservation, tripId: number) =>{
+        
+        const user = store.userStore.user;
+        const attendee =  new TripAttendee(new Profile(user!), 4);
+
+        try{
+            let newId = await agent.Trips.reserve(tripId, reservation);
+            runInAction(()=>{
+                //set user res
             });
             return newId;
         }
