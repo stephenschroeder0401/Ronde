@@ -49,31 +49,33 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
   
 
     return (
-        <Segment.Group>
-            <Segment>
-               <Menu.Header
+        <Segment.Group style={{position:'sticky', top:'8%'}}>
+            <Segment >
+                <Header style={{float: 'right', color: '#5A5A5A'}}
+                    content={"TOTAL: $" + totalPrice}
+                />
+                <Menu.Header
                     size='large'
-                    content="SELECT YOUR SPOT"
+                    content="SELECT TRIP LEGS"
                     style={{color: '#5A5A5A'}}/>
-                 <Menu vertical style={{width:'100%'}}>
+                 <Menu vertical>
+                    {
+                    stints!.map(stint => {
+                    let formatDateRange =  moment(stint.startDate).format("MM/DD") + " - " + 
+                                            moment(stint.endDate).format("MM/DD");
+                    
+                    let days = moment(stint.endDate).diff(moment(stint.startDate), 'days');
 
-                    {spots!.map(spot => {
-                        return(
-                        <Menu.Item onClick={() => {setSelectedSpot(String(spot.id))}}
-                            active={selectedSpot == String(spot.id)}
-                            name={String(spot.id)} style={{display: 'flex'}}>
-                            <span style={{flexDirection: 'column'}}>
-                            <Header size='large'>
-                                {spot.title}
-                            </Header>
-                            <Header size='small' style={{marginRight: 'auto'}}>
-                                {spot.description}
-                            </Header>
-                            </span>
-                            <Image style={{marginLeft: 'auto'}}size='medium' src="..//assets/categoryImages/nosara2.jpg"/>  
-                        </Menu.Item>)
-                        })}
-                 </Menu>
+                    return(
+                        <Menu.Item name={String(stint.stintId)}  
+                            active={activeStints.includes(String(stint.stintId))}
+                            onClick={() => 
+                                {activeStints.includes(String(stint.stintId)) ? 
+                                setActiveStints(activeStints.filter(s => s != String(stint.stintId))) 
+                                : setActiveStints([...activeStints, String(stint.stintId)])}}>
+                            <Header as='h4'>{formatDateRange}<Label color={activeStints?.includes(String(stint.stintId)) ? "teal" : "grey"} size='medium' content= {days + " nights"}></Label></Header>
+                        </Menu.Item>)})}
+                    </Menu>
             </Segment>
         </Segment.Group>
     )

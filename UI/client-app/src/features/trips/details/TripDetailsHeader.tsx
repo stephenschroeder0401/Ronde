@@ -53,8 +53,6 @@ export default observer (function TripDetailedHeader({trip}: Props) {
     }
 
     function confirmAttendance (){
-        console.log("confirm!");
-        console.log(reservationStore.userReservation);
         reservationStore.userReservation.reservationStatusId = tripRequestStatus;
         createReservation(reservationStore.userReservation, selectedTrip!.id);
         setModalOpen(false);
