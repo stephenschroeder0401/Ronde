@@ -27,7 +27,6 @@ export default observer(function TripDetails (this: any, {} : Props) {
   
   if(loadingInitial || !trip) return <LoadingComponent/>;
 
-  console.log(trip.attendees);
   return(
     <Grid>
       <Grid.Column width={4}>

@@ -19,17 +19,16 @@ interface Props {
 export default observer(function TripSelection({trip : {spots, host, stints, prices}} : Props) {
 
     const [selectedSpot, setSelectedSpot] = useState<string>();
-    const [activeStints, setActiveStints] = useState<string[]>([]);
-    const [totalPrice, setTotalPrice] = useState(0.00);
     const {reservationStore} = useStore();
 
 
     useEffect(() => {
         
-        let spotPrices = prices?.filter(p => String(p.spotId) === selectedSpot);
+        const res = {...reservationStore.userReservation};
+        res.spotId = selectedSpot;
 
-        console.log(spotPrices);
-        console.log(selectedSpot);
+        let spotPrices = prices?.filter(p => String(p.spotId) === selectedSpot);
+        let activeStints = res.stintIds;
 
         let total = spotPrices!.reduce((totalPrice, spotPrice)  => {
             if(activeStints.includes(String(spotPrice.stintId)))
@@ -39,13 +38,12 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
             }
             , 0);
 
-        setTotalPrice(total);
-        reservationStore.userReservation.cost = total;
-        reservationStore.userReservation.stintIds = activeStints;
-        reservationStore.userReservation.spotId = selectedSpot;
+        res.cost = total;
 
+        reservationStore.setReservation(res);
+        console.log(reservationStore.userReservation);
 
-    }, [selectedSpot, activeStints])
+    }, [selectedSpot])
   
 
     return (
