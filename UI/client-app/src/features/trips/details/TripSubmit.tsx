@@ -9,7 +9,7 @@ import moment from 'moment';
 import { TripAttendee } from '../../../app/models/profile';
 import { useStore } from '../../../app/stores/store';
 import { runInAction } from 'mobx';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import AttendanceModal from '../../../app/common/modals/attendanceModal';
 
 
@@ -21,16 +21,12 @@ interface Props {
 
 export default observer(function TripSubmit({trip} : Props) {
 
-    const {tripStore: {selectedTrip, createReservation, loading, cancelTripToggle}, reservationStore } = useStore();
+    const {tripStore: {selectedTrip, createReservation, loading, cancelTripToggle}, reservationStore, userStore } = useStore();
     const [activeStints, setActiveStints] = useState(reservationStore.userReservation.stintIds);
     const [modalBody, setModalBody] = useState('');
     const [modalHeader, setModalHeader] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [tripRequestStatus, setTripRequestStatus] = useState(0);
-
-    console.log("RES");
-    console.log(reservationStore.userReservation);
-    console.log(activeStints);
 
     function handleAttendance (requestStatus: number){
         
@@ -124,19 +120,9 @@ export default observer(function TripSubmit({trip} : Props) {
             <Segment clearing attached='bottom'>
                 <Grid>
                 <Grid.Column width={8}>
-                {trip.isHost ? (
+                {!userStore.user ? (
                 <>
-                <Button 
-                    color={trip.isCancelled ? 'green' : 'red'} 
-                    floated='left'
-                    basic
-                    content={trip.isCancelled ? 'Re-activate Trip' : 'Cancel Trip'}
-                    onClick={cancelTripToggle}
-                    loading={loading}   
-                />    
-                <Button as={Link} disabled={trip.isCancelled} to={`/manage/${trip.id}`} color='orange' floated='right'>
-                    Manage Event
-                </Button>
+                <Button as={NavLink} to='/' positive content="Login/Register"></Button>   
                 </>)
                 : reservationStore.userReservation.reservationStatusId == 1? (
                     <Button loading={loading} color='red' onClick={() =>handleAttendance(0)}>Cancel Request</Button>

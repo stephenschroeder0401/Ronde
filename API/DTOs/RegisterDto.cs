@@ -14,7 +14,6 @@ namespace API.DTOs
         [RegularExpression("^.*(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$", ErrorMessage = "Password does not meet requirements")]
         public string Password { get; set; }
 
-        [Required]
         public string Username { get; set; }
 
     }
