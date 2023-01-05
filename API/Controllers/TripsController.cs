@@ -27,6 +27,7 @@ namespace API.Controllers
         }
 
         // GET api/values/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

@@ -149,7 +149,7 @@ export default observer(function TripSubmit({trip} : Props) {
                 : reservationStore.userReservation.reservationStatusId == 4 ?(
                     <Button loading={loading} disabled={trip.isCancelled} onClick={() => console.log("request cancel")} color='red'>Request To Cancel</Button>
                 )
-                :   <Button loading={loading} color='teal' onClick={() =>handleAttendance(1)}>Requst To Join</Button>}
+                :   <Button disabled={reservationStore.userReservation.cost == 0} loading={loading} color='teal' onClick={() =>handleAttendance(1)}>Requst To Join</Button>}
                 </Grid.Column>
                 <Grid.Column width={8} style={{display:'flex', justifyContent: 'center'}}>
                 <Header size="large" style={{float: 'right', color: '#5A5A5A', textAlign:'center'}}
