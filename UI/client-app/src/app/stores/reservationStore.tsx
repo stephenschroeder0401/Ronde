@@ -9,8 +9,10 @@ export default class ReservationStore{
     userReservation: Reservation = {
         spotId: '0',
         stintIds: [],
+        stints: [],
         cost: 0,
         reservationStatusId: 0,
+        userName: ''
     };
 
 
@@ -19,8 +21,12 @@ export default class ReservationStore{
     }
 
     setReservation(res: Reservation){
+        console.log("setting res");
+        console.log(res);
           runInAction(() =>{
                 this.userReservation = res;
+                this.userReservation.cost = res.cost;
+                this.userReservation.spotId = res.spotId
             })
     }
 

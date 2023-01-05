@@ -17,6 +17,7 @@ namespace Persistance
         public DbSet<UserFollowing> UserFollowings { get; set; }
         public DbSet<ReservationStatus> ReservationStatus { get; set; }
         public DbSet<ReservationStatus> Reservations { get; set; }
+        public DbSet<ReservationStint> ReservationStint { get; set; }
         public DbSet<SpotPrice> SpotPrices { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Stint> Stints { get; set; }

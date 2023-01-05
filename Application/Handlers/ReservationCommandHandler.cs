@@ -33,6 +33,7 @@ namespace Application.Handlers
         {
             var trip = await _context.Trip.Include(a => a.Attendees)
                .ThenInclude(u => u.AppUser)
+               .Include(a => a.Reservations)
                .SingleOrDefaultAsync(x => x.Id == request.TripId);
 
             if (trip == null) return null;

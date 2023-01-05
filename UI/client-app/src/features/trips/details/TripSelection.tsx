@@ -18,8 +18,8 @@ interface Props {
 
 export default observer(function TripSelection({trip : {spots, host, stints, prices}} : Props) {
 
-    const [selectedSpot, setSelectedSpot] = useState<string>();
     const {reservationStore} = useStore();
+    const [selectedSpot, setSelectedSpot] = useState(reservationStore.userReservation.spotId);
 
 
     useEffect(() => {
@@ -57,16 +57,16 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
 
                     {spots!.map(spot => {
                         return(
-                        <Menu.Item onClick={() => {setSelectedSpot(String(spot.id))}}
+                        <Menu.Item disabled={reservationStore.userReservation.reservationStatusId > 0} onClick={() => {setSelectedSpot(String(spot.id))}}
                             active={selectedSpot == String(spot.id)}
                             name={String(spot.id)} style={{display: 'flex'}}>
                             <span style={{flexDirection: 'column'}}>
                             <Header size='large'>
                                 {spot.title}
                             </Header>
-                            <Header size='small' style={{marginRight: 'auto'}}>
+                            <span style={{fontSize:'20px'}}>
                                 {spot.description}
-                            </Header>
+                            </span>
                             </span>
                             <Image style={{marginLeft: 'auto'}}size='medium' src="..//assets/categoryImages/nosara2.jpg"/>  
                         </Menu.Item>)

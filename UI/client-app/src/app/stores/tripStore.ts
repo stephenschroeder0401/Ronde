@@ -65,6 +65,13 @@ export default class TripStore{
             
             trip.isHost = trip.hostUsername === user.userName;
             trip.host = trip.attendees?.find(x => x.username === trip.hostUsername);
+
+            const userReservation = trip.reservations?.find(r => r.userName == user?.userName);
+            if(userReservation){
+                console.log("found reservation")
+                console.log(userReservation)
+                store.reservationStore.setReservation(userReservation);
+            }
         }
 
         trip.startDate = new Date(trip.startDate!);

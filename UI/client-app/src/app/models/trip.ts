@@ -2,6 +2,7 @@ import { TablePaginationUnstyledDisplayedRowsSlotProps } from "@mui/base";
 import { CardDescriptionProps } from "semantic-ui-react";
 import { isConstructorDeclaration } from "typescript";
 import { Profile, TripAttendee } from "./profile";
+import { User } from "./user";
 
 export interface Trip {
     id: number;
@@ -21,6 +22,7 @@ export interface Trip {
     spots?: Spot[];
     stints?: Stint[];
     prices?: Price[];
+    reservations?: Reservation[];
 }
 
 export class Trip implements Trip{
@@ -78,9 +80,11 @@ export interface Price{
 
 export interface Reservation{
     spotId: String | undefined;
-    stintIds: string[];
-    cost: number;
+    stintIds: String[];
+    stints: Stint[];
+    cost: number ;
     reservationStatusId: number;   
+    userName: String | undefined;
 }
 
 export class Reservation implements Reservation {

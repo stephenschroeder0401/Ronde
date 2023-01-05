@@ -20,5 +20,6 @@ namespace Application.DTOs
         public ICollection<Spot>  Spots { get; set; }
         public ICollection<Stint> Stints { get; set; }
         public ICollection<PriceDto>  Prices { get; set; }
+        public ICollection<ReservationDto> Reservations { get; set; }
     }
 }

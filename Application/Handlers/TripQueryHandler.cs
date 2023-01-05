@@ -45,6 +45,21 @@ namespace Application.Handlers
                 }
             }
 
+            foreach (var res in trip.Reservations)
+            {
+                var resStints = _context.ReservationStint.Where(rs => rs.ReservationId == res.ReservationId);
+
+                res.StintIds = new List<string>();
+
+                if (resStints?.ToList().Count > 0)
+                {
+                    foreach (var rs in resStints)
+                    {
+                        res.StintIds.Add(rs.StintId.ToString());
+                    }
+                }
+            }
+
             trip.Prices = prices;
 
             return Result<TripDto>.Success(trip);

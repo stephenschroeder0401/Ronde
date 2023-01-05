@@ -21,13 +21,16 @@ interface Props {
 
 export default observer(function TripSubmit({trip} : Props) {
 
-    const [activeStints, setActiveStints] = useState<string[]>([]);
     const {tripStore: {selectedTrip, createReservation, loading, cancelTripToggle}, reservationStore } = useStore();
+    const [activeStints, setActiveStints] = useState(reservationStore.userReservation.stintIds);
     const [modalBody, setModalBody] = useState('');
     const [modalHeader, setModalHeader] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [tripRequestStatus, setTripRequestStatus] = useState(0);
 
+    console.log("RES");
+    console.log(reservationStore.userReservation);
+    console.log(activeStints);
 
     function handleAttendance (requestStatus: number){
         
@@ -42,6 +45,10 @@ export default observer(function TripSubmit({trip} : Props) {
             setModalBody("This will notify the host that you would like to join this trip. "+
             "Payment will not be required until your request has been accepted. Would you like to proceed?");
             break;
+        case 2:
+            setModalHeader("Complete Payment");
+            setModalBody("Your request has been accepted! "+
+            `Please complete your payment of $${reservationStore.userReservation.cost}.00 via Venmo to your host, Stephen Schroeder. Username: @Stephen-Schroeder-3. Last 4 digits of phone number: 9113`);
         }
 
         setTripRequestStatus(requestStatus);
@@ -50,9 +57,10 @@ export default observer(function TripSubmit({trip} : Props) {
 
      function confirmAttendance (){
         reservationStore.userReservation.reservationStatusId = tripRequestStatus;
-        createReservation(reservationStore.userReservation, selectedTrip!.id);
+        if (tripRequestStatus != 2)
+            createReservation(reservationStore.userReservation, selectedTrip!.id);
         setModalOpen(false);
-        }
+    } 
 
 
 
@@ -82,15 +90,14 @@ export default observer(function TripSubmit({trip} : Props) {
     return (
         <Segment.Group style={{position:'sticky', top:'8%'}}>
             <AttendanceModal body={modalBody} header={modalHeader} isOpen={modalOpen} confirm={() => confirmAttendance()} closeModal={()=> setModalOpen(false)}/>
-            <Segment >
-                <Header style={{float: 'right', color: '#5A5A5A'}}
-                    content={"TOTAL: $" + reservationStore.userReservation.cost}
-                />
+            <Segment>
+                <Grid >
+                <Grid.Column width={10}>
                 <Menu.Header
                     size='large'
                     content="SELECT TRIP LEGS"
                     style={{color: '#5A5A5A'}}/>
-                 <Menu vertical>
+                 <Menu vertical style={{width:"14rem"}}>
                     {
                     trip.stints!.map(stint => {
                     let formatDateRange =  moment(stint.startDate).format("MM/DD") + " - " + 
@@ -99,17 +106,24 @@ export default observer(function TripSubmit({trip} : Props) {
                     let days = moment(stint.endDate).diff(moment(stint.startDate), 'days');
 
                     return(
-                        <Menu.Item name={String(stint.stintId)}  
-                            active={activeStints.includes(String(stint.stintId))}
+                        <Menu.Item disabled={reservationStore.userReservation.reservationStatusId > 0} name={String(stint.stintId)}  
+                            active={reservationStore.userReservation.stintIds.includes(String(stint.stintId))}
                             onClick={() => 
                                 {activeStints.includes(String(stint.stintId)) ? 
                                 setActiveStints(activeStints.filter(s => s != String(stint.stintId))) 
                                 : setActiveStints([...activeStints, String(stint.stintId)])}}>
-                            <Header as='h4'>{formatDateRange}<Label color={activeStints?.includes(String(stint.stintId)) ? "teal" : "grey"} size='medium' content= {days + " nights"}></Label></Header>
+                            <b>{formatDateRange}</b><Label color={activeStints?.includes(String(stint.stintId)) ? "teal" : "grey"} size='medium' content= {days + " nights"}></Label>
                         </Menu.Item>)})}
                     </Menu>
+                    </Grid.Column>
+                    <Grid.Column width={6}>
+                   
+                    </Grid.Column>
+                </Grid>
             </Segment>
             <Segment clearing attached='bottom'>
+                <Grid>
+                <Grid.Column width={8}>
                 {trip.isHost ? (
                 <>
                 <Button 
@@ -124,19 +138,26 @@ export default observer(function TripSubmit({trip} : Props) {
                     Manage Event
                 </Button>
                 </>)
-                : trip.userStatus == 1? (
+                : reservationStore.userReservation.reservationStatusId == 1? (
                     <Button loading={loading} color='red' onClick={() =>handleAttendance(0)}>Cancel Request</Button>
                 ) 
-                : trip.userStatus == 2 ? (
+                : reservationStore.userReservation.reservationStatusId == 2 ? (
                     <>
-                    <Button loading={loading} color='teal' onClick={() =>handleAttendance(0)}>Complete Payment</Button>
-                    <Button loading={loading} color='red' onClick={() =>handleAttendance(0)}>Cancel Request</Button>
+                    <Button loading={loading} color='blue' onClick={() =>handleAttendance(2)}>Complete Payment</Button>
                     </>
                 )
-                : trip.userStatus == 4 ?(
+                : reservationStore.userReservation.reservationStatusId == 4 ?(
                     <Button loading={loading} disabled={trip.isCancelled} onClick={() => console.log("request cancel")} color='red'>Request To Cancel</Button>
                 )
                 :   <Button loading={loading} color='teal' onClick={() =>handleAttendance(1)}>Requst To Join</Button>}
+                </Grid.Column>
+                <Grid.Column width={8} style={{display:'flex', justifyContent: 'center'}}>
+                <Header size="large" style={{float: 'right', color: '#5A5A5A', textAlign:'center'}}
+                            content={"TOTAL: $" + reservationStore.userReservation.cost.toString()}
+                />
+                </Grid.Column>
+                
+                </Grid>
             </Segment>
         </Segment.Group>
     )

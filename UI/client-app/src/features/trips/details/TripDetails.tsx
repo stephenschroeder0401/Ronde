@@ -24,6 +24,7 @@ export default observer(function TripDetails (this: any, {} : Props) {
   useEffect(() =>{
     if(id) loadTrip(+id);
   }, [id, loadTrip])
+
   
   if(loadingInitial || !trip) return <LoadingComponent/>;
 
