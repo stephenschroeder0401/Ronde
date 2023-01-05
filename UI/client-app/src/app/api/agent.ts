@@ -81,7 +81,7 @@ const Trips = {
 const Account ={
     current: () => requests.get<User>('/account'),
     login: (user: UserFormValues) => requests.post<User>('/account/login', {Email: user.email, Password: user.password}),
-    register: (user: UserFormValues) => requests.post<User>('/account/register', {Email: user.email, Password: user.password, Username: user.username, DisplayName: user.displayName}),
+    register: (user: UserFormValues) => requests.post<User>('/account/register', {Email: user.email, Password: user.password, PhoneNumber: user.phoneNumber, DisplayName: user.displayName}),
     
 }
 

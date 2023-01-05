@@ -26,7 +26,6 @@ namespace Application.Core
 
             CreateMap<TripAttendee, AttendeeDto>()
                 .ForMember(d => d.UserId, o => o.MapFrom(s => s.AppUser.Id))
-                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.AppUser.UserName))
                 .ForMember(d => d.Bio, o => o.MapFrom(s => s.AppUser.Bio))
                 .ForMember(d => d.Image, 

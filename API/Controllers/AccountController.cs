@@ -60,17 +60,16 @@ namespace API.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            if (await userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
-            {
-                ModelState.AddModelError("username", "Username taken");
-                return ValidationProblem("Username taken");
-            }
+            //if (await userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
+            //{
+            //    ModelState.AddModelError("username", "Username taken");
+            //    return ValidationProblem("Username taken");
+            //}
 
             var user = new AppUser
             {
-                DisplayName = registerDto.DisplayName,
                 Email = registerDto.Email,
-                UserName = registerDto.Username
+                UserName = registerDto.Email
             };
 
             var result = await userManager.CreateAsync(user, registerDto.Password);
@@ -98,7 +97,6 @@ namespace API.Controllers
         {
             return new UserDto
             {
-                DisplayName = user.DisplayName,
                 Image = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url,
                 Token = tokenService.CreateToken(user),
                 UserName = user.UserName

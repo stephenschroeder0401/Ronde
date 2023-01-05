@@ -10,26 +10,27 @@ import ValidationErrors from '../errors/ValidationErrors';
 export default observer(function RegisterForm(){
 
     const {userStore} = useStore();
-    
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
     return (
         <Formik
-            initialValues={{displayName: '', username: '',email: '', password:'', error: null}}
+            initialValues={{displayName: '', email: '', password:'', phoneNumber:'', error: null}}
             onSubmit={(values, {setErrors}) => userStore.register(values).catch(error => 
                 setErrors({error: error}))}
 
             validationSchema = {Yup.object({
                 displayName: Yup.string().required(),
-                username: Yup.string().required(),
                 email: Yup.string().required().email(),
                 password: Yup.string().required(),
+                phoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid')
             })}
         >
            {({handleSubmit, isSubmitting, errors, isValid, dirty}) => (
                <Form className='ui form error' onSubmit={handleSubmit} autoComplete='off'>
                    <Header as='h2' content='Sign up for Ronde' color='teal' textAlign='center'/>
-                   <MyTextInput name='email' placeholder='Email'></MyTextInput>
-                   <MyTextInput name='username' placeholder='User Name'></MyTextInput>
                    <MyTextInput name='displayName' placeholder='Full Name'></MyTextInput>
+                   <MyTextInput name='email' placeholder='Email Address'></MyTextInput>
+                   <MyTextInput name='phoneNumber' placeholder='Phone Number'></MyTextInput>
                    <MyTextInput name='password' placeholder='Password' type='password'></MyTextInput>
                    <ErrorMessage
                         name='error' render={() => <ValidationErrors errors={errors.error}/>}
