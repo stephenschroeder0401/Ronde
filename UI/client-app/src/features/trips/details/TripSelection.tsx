@@ -58,15 +58,11 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
                         return(
                         <Menu.Item disabled={reservationStore.userReservation.reservationStatusId > 0} onClick={() => {setSelectedSpot(String(spot.id))}}
                             active={selectedSpot == String(spot.id)}
-                            name={String(spot.id)} style={{display: 'flex'}}>
-                            <span style={{flexDirection: 'column'}}>
+                            name={String(spot.id)}>
                             <Header size='large'>
                                 {spot.title}
                             </Header>
-                            <span style={{fontSize:'em'}}>
                                 {spot.description}
-                            </span>
-                            </span>
                             <Image style={{ width: '100%', height: '100%', objectFit: 'cover'}} size='medium' src="..//assets/categoryImages/nosara2.jpg"/>  
                         </Menu.Item>)
                         })}

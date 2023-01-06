@@ -27,6 +27,7 @@ export default observer(function TripSubmit({trip} : Props) {
     const [modalHeader, setModalHeader] = useState('');
     const [modalOpen, setModalOpen] = useState(false);
     const [tripRequestStatus, setTripRequestStatus] = useState(0);
+    const [userDateRange, setUserDateRange] = useState('select dates..');
 
     function handleAttendance (requestStatus: number){
         
@@ -78,13 +79,39 @@ export default observer(function TripSubmit({trip} : Props) {
         res.cost = total;
         
         reservationStore.setReservation(res);
-        console.log(reservationStore.userReservation)
+
+        let minDate = moment('2100-01-01');
+        let maxDate = moment('1900-01-01');
+       
+        trip.stints?.map(stint =>{
+            if(activeStints.indexOf(stint.stintId.toString()) !== -1){
+                if(moment(stint.startDate).isBefore(minDate))
+                    minDate = moment(stint.startDate)
+                        
+                if(moment(stint.endDate).isAfter(maxDate))
+                    maxDate = moment(stint.endDate)
+
+            }
+        })
+
+        let formatDateRange = 'None selected..';
+        
+        if(activeStints.length > 0){
+            if(activeStints.length == 2 && activeStints.indexOf('2') == -1){
+                formatDateRange =  "01/20 - 01/23, 01/27 - 01/30"
+            }
+            else{
+                formatDateRange =  minDate.format("MM/DD") + " - " + maxDate.format("MM/DD");
+            }
+            setUserDateRange(formatDateRange);
+        }
+    
 
     }, [activeStints])
   
 
     return (
-        <Segment.Group style={{position:'sticky', top:'15px', zIndex: 100}}>
+        <Segment.Group style={{position:'sticky', top:'5px', zIndex: 100}}>
             <AttendanceModal body={modalBody} header={modalHeader} isOpen={modalOpen} confirm={() => confirmAttendance()} closeModal={()=> setModalOpen(false)}/>
             <Segment>
                 <Grid >
@@ -113,14 +140,11 @@ export default observer(function TripSubmit({trip} : Props) {
                         </Menu.Item>)})}
                     </Menu>
                     </Grid.Column>
-                    <Grid.Column width={6}>
-                   
-                    </Grid.Column>
                 </Grid>
             </Segment>
             <Segment clearing attached='bottom'>
                 <Grid>
-                <Grid.Column width={8}>
+                <Grid.Column width={5} >
                 {!userStore.user ? (
                 <>
                 <Button as={NavLink} to='/' positive content="Login/Register"></Button>   
@@ -138,12 +162,25 @@ export default observer(function TripSubmit({trip} : Props) {
                 )
                 :   <Button disabled={reservationStore.userReservation.cost == 0} loading={loading} color='teal' onClick={() =>handleAttendance(1)}>Requst To Join</Button>}
                 </Grid.Column>
-                <Grid.Column width={8} style={{display:'flex', justifyContent: 'center'}}>
-                <Header size="large" style={{float: 'right', color: '#5A5A5A', textAlign:'center'}}
-                            content={"TOTAL: $" + reservationStore.userReservation.cost.toString()}
-                />
-                </Grid.Column>
-                
+                 <Grid.Column width={6}>
+                    <div style={{display:'flex', flexDirection: 'column', marginLeft: '0.5rem'}}>
+                    <Header size="medium" style={{float: 'left', color: '#5A5A5A', textAlign:'left', marginBottom:'0.2rem'}}
+                            content={"Dates:"}
+                    />
+                    <span>
+                        {userDateRange}
+                    </span>
+                    </div>
+                     
+                 </Grid.Column>
+                 <Grid.Column width={5} >
+                    <div style={{display:'flex', flexDirection: 'column', marginTop: '-0.1rem'}}>
+                    <Header size="medium" style={{float: 'right', color: '#5A5A5A', textAlign:'left'}}
+                            content={"Total: $" + reservationStore.userReservation.cost.toString() +".00"}
+                    />
+                    </div>
+                 </Grid.Column>
+                   
                 </Grid>
             </Segment>
         </Segment.Group>
