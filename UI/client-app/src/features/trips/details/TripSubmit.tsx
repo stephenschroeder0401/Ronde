@@ -111,7 +111,7 @@ export default observer(function TripSubmit({trip} : Props) {
   
 
     return (
-        <Segment.Group style={{position:'sticky', top:'5px', zIndex: 100}}>
+        <Segment.Group style={{position:'sticky', top:'30px', zIndex: 100}}>
             <AttendanceModal body={modalBody} header={modalHeader} isOpen={modalOpen} confirm={() => confirmAttendance()} closeModal={()=> setModalOpen(false)}/>
             <Segment>
                 <Grid >
@@ -144,7 +144,7 @@ export default observer(function TripSubmit({trip} : Props) {
             </Segment>
             <Segment clearing attached='bottom'>
                 <Grid>
-                <Grid.Column width={5} >
+                <Grid.Column width={6} >
                 {!userStore.user ? (
                 <>
                 <Button as={NavLink} to='/' positive content="Login/Register"></Button>   
@@ -173,7 +173,7 @@ export default observer(function TripSubmit({trip} : Props) {
                     </div>
                      
                  </Grid.Column>
-                 <Grid.Column width={5} >
+                 <Grid.Column width={4} >
                     <div style={{display:'flex', flexDirection: 'column', marginTop: '-0.1rem'}}>
                     <Header size="medium" style={{float: 'right', color: '#5A5A5A', textAlign:'left'}}
                             content={"Total: $" + reservationStore.userReservation.cost.toString() +".00"}

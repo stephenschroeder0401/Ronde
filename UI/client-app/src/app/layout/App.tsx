@@ -42,7 +42,7 @@ function App() {
         render={() => (
           <>
             <NavBar/>
-             <Container style={{marginTop: '4rem'}}> 
+             <Container style={{marginTop: '5em'}}> 
                <Switch>
                   <Route path='/trips' exact component={TripDashboard}/>
                   <Route path='/trips/:id' component={TripDetails}/>

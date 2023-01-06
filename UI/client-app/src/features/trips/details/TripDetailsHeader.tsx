@@ -14,7 +14,10 @@ import { createReadStream } from 'fs';
 
 
 const tripImageStyle = {
-    filter: 'brightness(70%)'
+    filter: 'brightness(70%)',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
 };
 
 interface Props {
@@ -31,7 +34,16 @@ export default observer (function TripDetailedHeader({trip}: Props) {
     const [photoIdx, setPhotoIdx] = useState(0);
     const [tripRequestStatus, setTripRequestStatus] = useState(0);
     
-    const images = ['..//assets/categoryImages/nosara2.jpg','..//assets/categoryImages/travel.jpg','..//assets/categoryImages/nosara1.jpg']
+    const images = ['..//assets/TahoeTrip/FullArea.jpg',
+    '..//assets/TahoeTrip/FullArea.jpg',
+    '..//assets/TahoeTrip/FullArea2.jpg',
+    '..//assets/TahoeTrip/Kitchen.jpg',
+    '..//assets/TahoeTrip/Kitchen2.jpg',
+    '..//assets/TahoeTrip/Kitchen3.jpg',
+    '..//assets/TahoeTrip/LivingRoom.jpg',
+    '..//assets/TahoeTrip/Single.jpg',
+    '..//assets/TahoeTrip/King.jpg',
+    '..//assets/TahoeTrip/Bunks.jpg']
 
     return (
         <Segment.Group>
@@ -47,7 +59,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                       
             </Segment>
             <Segment>
-                <Image src={`..//assets/categoryImages/travel.jpg`} onClick={()=>setPhotosOpen(true)} fluid style={tripImageStyle}/>
+                <Image size='huge' src={`..//assets/TahoeTrip/FullArea.jpg`} onClick={()=>setPhotosOpen(true)} fluid style={tripImageStyle}/>
                  {photosOpen && <Lightbox
                     mainSrc={images[photoIdx]}
                     nextSrc={images[(photoIdx + 1) % images.length]}
