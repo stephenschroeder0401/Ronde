@@ -84,22 +84,23 @@ export default observer(function TripSubmit({trip} : Props) {
   
 
     return (
-        <Segment.Group style={{position:'sticky', top:'8%'}}>
+        <Segment.Group style={{position:'sticky', top:'15px', zIndex: 100}}>
             <AttendanceModal body={modalBody} header={modalHeader} isOpen={modalOpen} confirm={() => confirmAttendance()} closeModal={()=> setModalOpen(false)}/>
             <Segment>
                 <Grid >
-                <Grid.Column width={10}>
+                <Grid.Column width={16}>
                 <Menu.Header
                     size='large'
                     content="SELECT TRIP LEGS"
                     style={{color: '#5A5A5A'}}/>
-                 <Menu vertical style={{width:"14rem"}}>
+                 <Menu vertical style={{width:'100%'}}>
                     {
                     trip.stints!.map(stint => {
                     let formatDateRange =  moment(stint.startDate).format("MM/DD") + " - " + 
                                             moment(stint.endDate).format("MM/DD");
                     
                     let days = moment(stint.endDate).diff(moment(stint.startDate), 'days');
+
 
                     return(
                         <Menu.Item disabled={reservationStore.userReservation.reservationStatusId > 0} name={String(stint.stintId)}  

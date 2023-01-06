@@ -8,17 +8,12 @@ export default observer(function NavBar(){
     const {userStore: {user, logout}} = useStore();
     
     return (
-       <Menu inverted fixed='top'>
-           <Container>
+       <Menu inverted fixed='top' style={{height: "10px"}}>
+            <Container>
                <Menu.Item as={NavLink} to='/' exact header>
                     <img src="/assets/logo.png" alt="logo" style={{marginRight: '10px'}}></img>
                     Ronde
-               </Menu.Item>
-               <Menu.Item as={NavLink} to='/trips' name="Trips"/>
-               <Menu.Item as={NavLink} to='/errors' name="Errors"/>
-               <Menu.Item>
-                   <Button as={NavLink} to='/createTrip' positive content="Create Trip"></Button>
-               </Menu.Item>
+               </Menu.Item>              
                <Menu.Item position='right'>
                    <Image src={user?.image || '/assets/user.png'} avatar spaced='right'/>
                    <Dropdown pointing='top left' text={user?.displayName}>
@@ -28,7 +23,7 @@ export default observer(function NavBar(){
                         </DropdownMenu>
                    </Dropdown>
                </Menu.Item>
-           </Container>
+           </Container> 
        </Menu>
     )
 });

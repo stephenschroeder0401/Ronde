@@ -11,6 +11,7 @@ import Lightbox from 'react-image-lightbox';
 import "react-image-lightbox/style.css";
 import TripStore from '../../../app/stores/tripStore';
 import { createReadStream } from 'fs';
+import ReservationStore from '../../../app/stores/reservationStore';
 
 
 const tripImageStyle = {
@@ -37,7 +38,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
         <Segment.Group>
             <Segment>
             
-                {trip.userStatus == 2 &&
+                {reservationStore.userReservation.reservationStatusId == 2 &&
                     <Label size='large' style={{position: 'absolute', left: -18, top:-20}} ribbon color='blue' content='Congrats! You have been accepted. Proceed with your payment to confirm your spot!'/>}          
             
                     <Item.Group>

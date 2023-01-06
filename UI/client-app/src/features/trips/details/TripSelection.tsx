@@ -54,7 +54,6 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
                     content="SELECT YOUR SPOT"
                     style={{color: '#5A5A5A'}}/>
                  <Menu vertical style={{width:'100%'}}>
-
                     {spots!.map(spot => {
                         return(
                         <Menu.Item disabled={reservationStore.userReservation.reservationStatusId > 0} onClick={() => {setSelectedSpot(String(spot.id))}}
@@ -64,11 +63,11 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
                             <Header size='large'>
                                 {spot.title}
                             </Header>
-                            <span style={{fontSize:'20px'}}>
+                            <span style={{fontSize:'em'}}>
                                 {spot.description}
                             </span>
                             </span>
-                            <Image style={{marginLeft: 'auto'}}size='medium' src="..//assets/categoryImages/nosara2.jpg"/>  
+                            <Image style={{ width: '100%', height: '100%', objectFit: 'cover'}} size='medium' src="..//assets/categoryImages/nosara2.jpg"/>  
                         </Menu.Item>)
                         })}
                  </Menu>

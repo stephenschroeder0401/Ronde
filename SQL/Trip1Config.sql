@@ -40,3 +40,28 @@ Values
 (5, 2, '100.00'),
 (5, 3, '100.00')
 
+
+
+select * from Reservation
+select * from ReservationStint
+
+select * from ReservationStatus
+
+
+
+select * from Trip t 
+join Stints s on t.Id = s.TripId
+
+select * from AspNetUsers
+
+
+select * from ReservationStatus
+
+
+select * from ReservationStint
+
+
+update Reservation
+set ReservationStatusId = 2
+
+delete from Reservation where ReservationId = 8

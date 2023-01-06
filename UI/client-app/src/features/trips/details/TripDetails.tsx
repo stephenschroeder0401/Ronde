@@ -30,11 +30,9 @@ export default observer(function TripDetails (this: any, {} : Props) {
 
   return(
     <Grid>
-      <Grid.Column width={4}>
-            <TripSubmit trip={trip} />
-      </Grid.Column>
-      <Grid.Column width={12}>
+      <Grid.Column width={16}>
         <TripDetailedHeader trip={trip}/>
+        <TripSubmit trip={trip} />
         <TripDetailedInfo trip={trip} />
         <TripSelection  trip={trip} />
       </Grid.Column>
