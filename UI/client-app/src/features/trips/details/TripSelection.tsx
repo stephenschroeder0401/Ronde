@@ -62,8 +62,10 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
                             <Header size='large'>
                                 {spot.title}
                             </Header>
+                            <span style={{marginBottom:'0.2em'}}>
                                 {spot.description}
-                            <Image style={{ width: '100%', height: '100%', objectFit: 'cover'}} size='medium' src="..//assets/categoryImages/nosara2.jpg"/>  
+                            </span>
+                            <Image style={{marginTop:'0.8rem', width: '100%', height: '100%', objectFit: 'cover'}} size='medium' src="..//assets/categoryImages/nosara2.jpg"/>  
                         </Menu.Item>)
                         })}
                  </Menu>

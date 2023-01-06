@@ -11,7 +11,6 @@ import Lightbox from 'react-image-lightbox';
 import "react-image-lightbox/style.css";
 import TripStore from '../../../app/stores/tripStore';
 import { createReadStream } from 'fs';
-import ReservationStore from '../../../app/stores/reservationStore';
 
 
 const tripImageStyle = {
@@ -37,26 +36,15 @@ export default observer (function TripDetailedHeader({trip}: Props) {
     return (
         <Segment.Group>
             <Segment>
-            
-                {reservationStore.userReservation.reservationStatusId == 2 &&
-                    <Label size='large' style={{position: 'absolute', left: -18, top:-20}} ribbon color='blue' content='Congrats! You have been accepted. Proceed with your payment to confirm your spot!'/>}          
-            
-                    <Item.Group>
-                        <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
                                     content={trip.title}
-                                    style={{color: 'black'}}
+                                    style={{color: 'black', marginBottom:'1px'}}
                                 />
+                                <Header size='large' style={{color: 'grey', marginTop:'0.3em'}} sub content={format(trip.startDate!, 'MMMM dd yyyy') + ' - ' + format(trip.endDate!, 'MMMM dd yyyy')}/>
                             </Item.Content>
-                        </Item>
-                        <Item>
-                            <Item.Content>
-                                <Header size='large' style={{color: 'grey'}} sub content={format(trip.startDate!, 'MMMM dd yyyy') + ' - ' + format(trip.endDate!, 'MMMM dd yyyy')}/>
-                            </Item.Content>
-                        </Item>
-                    </Item.Group>
+                      
             </Segment>
             <Segment>
                 <Image src={`..//assets/categoryImages/travel.jpg`} onClick={()=>setPhotosOpen(true)} fluid style={tripImageStyle}/>

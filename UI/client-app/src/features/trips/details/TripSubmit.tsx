@@ -103,9 +103,9 @@ export default observer(function TripSubmit({trip} : Props) {
             else{
                 formatDateRange =  minDate.format("MM/DD") + " - " + maxDate.format("MM/DD");
             }
-            setUserDateRange(formatDateRange);
         }
     
+        setUserDateRange(formatDateRange);
 
     }, [activeStints])
   

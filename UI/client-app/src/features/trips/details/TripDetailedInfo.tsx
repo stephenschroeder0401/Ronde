@@ -10,27 +10,29 @@ interface Props {
 
 export default observer(function TripDetailedInfo({trip}: Props) {
 
-    const tripDescription = `Surf trip to ${trip.city}! There are limited spots. We are going to be working, and surfng, and exploring nightlife on weekend nights.`
+    const tripDescription = trip.description
     return (
         <Segment.Group>
             <Segment attached>
-                 <Header
-                      size='large'
-                      content="THE TRIP"
+                 <Grid verticalAlign='middle'>
+                    <Grid.Column width={9}>
+                    <Header
+                      size='medium'
+                      content="DEETS"
                       style={{color: 'grey'}}
                     /> 
-                <Grid verticalAlign='middle'>
+                    </Grid.Column>
                     <Grid.Column width={1}>
                         <Icon name='marker' size='large' color='teal'/>
                     </Grid.Column>
-                    <Grid.Column width={11}>
-                        <span>{trip.venue}, {trip.city}</span>
+                    <Grid.Column width={5}>
+                        <span>{trip.city}</span>
                     </Grid.Column>
                 </Grid>
             </Segment>
             <Segment attached>
                 <Grid verticalAlign='middle'>
-                    <Grid.Column width={11}>
+                    <Grid.Column width={16}>
                         <span>{tripDescription}</span>
                     </Grid.Column>
                 </Grid>
