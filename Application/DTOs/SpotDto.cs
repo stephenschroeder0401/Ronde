@@ -12,5 +12,6 @@ namespace Application.DTOs
         public bool IsPrivate { get; set; }
         public int MaxGuests { get; set; } = 1;
         public int RoomId { get; set; }
+        public string Img { get; set; }
     }
 }

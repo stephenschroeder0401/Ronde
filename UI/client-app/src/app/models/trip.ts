@@ -61,7 +61,8 @@ export interface Spot{
      description: string;
      isPrivate: boolean;
      maxGuests: number;
-     roomId: number
+     roomId: number;
+     img: string;
 }
 
 export interface Stint{

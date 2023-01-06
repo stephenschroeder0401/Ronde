@@ -15,6 +15,6 @@ namespace Domain
         public Room Room { get; set; }
         public bool IsPrivate { get; set; }
         public int MaxGuests { get; set; } = 1;
-
+        public string Img { get; set; }
     }
 }
