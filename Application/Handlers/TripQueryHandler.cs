@@ -30,6 +30,7 @@ namespace Application.Handlers
 
         public async Task<Result<TripDto>> Handle(TripQuery request, CancellationToken cancellationToken)
         {
+
             var trip = await _context.Trip.ProjectTo<TripDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(x => x.Id == request.Id);
 

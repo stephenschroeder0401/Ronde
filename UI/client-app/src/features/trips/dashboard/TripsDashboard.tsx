@@ -27,9 +27,6 @@ export default observer (function TripDashboard(){
             <Grid.Column width='10'>
                <TripList/>
             </Grid.Column>
-            <Grid.Column width='6'>
-              <TripFilters />
-            </Grid.Column>
         </Grid>
     )
 })

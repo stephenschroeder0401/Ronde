@@ -20,7 +20,7 @@ export default class UserStore{
             const user = await agent.Account.login(creds);
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
-            history.push('/trips/1');
+            history.push('/trips/2');
             store.modalStore.closeModal();
         } catch(er){
             console.log('ERRR');
@@ -49,7 +49,7 @@ export default class UserStore{
             const user = await agent.Account.register(creds);
             store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
-            history.push('/trips/1');
+            history.push('/trips/2');
             store.modalStore.closeModal();
         } catch(er){
             console.log('ERRR');

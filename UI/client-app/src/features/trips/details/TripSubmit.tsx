@@ -97,7 +97,7 @@ export default observer(function TripSubmit({trip} : Props) {
         let formatDateRange = 'None selected..';
         
         if(activeStints.length > 0){
-            if(activeStints.length == 2 && activeStints.indexOf('2') == -1){
+            if(activeStints.length == 2 && activeStints.indexOf('7') == -1){
                 formatDateRange =  "01/20 - 01/23, 01/27 - 01/30"
             }
             else{

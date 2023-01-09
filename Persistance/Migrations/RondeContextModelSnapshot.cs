@@ -648,7 +648,7 @@ namespace Persistance.Migrations
                     b.HasOne("Domain.AppUser", "Observer")
                         .WithMany("Followings")
                         .HasForeignKey("ObserverId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.AppUser", "Target")
                         .WithMany("Followers")
