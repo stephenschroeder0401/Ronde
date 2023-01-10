@@ -44,8 +44,7 @@ export default observer(function TripSubmit({trip} : Props) {
             break;
         case 2:
             setModalHeader("Complete Payment");
-            setModalBody("Your request has been accepted! "+
-            `Please complete your payment of $${reservationStore.userReservation.cost}.00 via Venmo to your host, Stephen Schroeder. Username: @Stephen-Schroeder-3. Last 4 digits of phone number: 9113`);
+            setModalBody(`Please complete your payment of $${reservationStore.userReservation.cost}.00 via Venmo to @Stephen-Schroeder-3. Last 4 digits of phone number: 9113`);
         }
 
         setTripRequestStatus(requestStatus);
