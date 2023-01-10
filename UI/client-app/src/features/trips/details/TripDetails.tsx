@@ -9,6 +9,7 @@ import TripDetailedInfo from './TripDetailedInfo';
 import TripDetailedSidebar from './TripDetailedSidebar';
 import TripDetailedHeader from './TripDetailsHeader';
 import TripSubmit from './TripSubmit';
+import StatusDialog from './StatusDialog';
 
 interface Props {
 }
@@ -32,6 +33,7 @@ export default observer(function TripDetails (this: any, {} : Props) {
     <Grid>
       <Grid.Column width={16}>
         <TripDetailedHeader trip={trip}/>
+        <StatusDialog/>
         <TripSubmit trip={trip} />
         <TripDetailedInfo trip={trip} />
         <TripSelection  trip={trip} />
