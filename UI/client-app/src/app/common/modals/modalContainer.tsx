@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { Grid, Modal } from 'semantic-ui-react';
+import { Button, Grid, Modal } from 'semantic-ui-react';
 import { useStore } from '../../stores/store';
 
 
 
 export default observer(function ModalContainer(){
-    const {modalStore} = useStore();
+    const {modalStore, reservationStore} = useStore();
 
     return (
         <Grid>

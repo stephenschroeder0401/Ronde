@@ -33,7 +33,6 @@ export default observer(function TripDetails (this: any, {} : Props) {
     <Grid>
       <Grid.Column width={16}>
         <TripDetailedHeader trip={trip}/>
-        <StatusDialog/>
         <TripSubmit trip={trip} />
         <TripDetailedInfo trip={trip} />
         <TripSelection  trip={trip} />

@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
-import {Button, Header, Item, Segment, Image, Label} from 'semantic-ui-react'
+import {Button, Header, Item, Segment, Image, Label, Grid, Card} from 'semantic-ui-react'
 import {Trip} from "../../../app/models/trip";
 import AttendanceModal from "../../../app/common/modals/attendanceModal";
 import {format} from "date-fns";
@@ -11,6 +11,7 @@ import Lightbox from 'react-image-lightbox';
 import "react-image-lightbox/style.css";
 import TripStore from '../../../app/stores/tripStore';
 import { createReadStream } from 'fs';
+import useScript from './useScript';
 
 
 const tripImageStyle = {
@@ -33,6 +34,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
     const [modalHeader, setModalHeader] = useState('');
     const [photoIdx, setPhotoIdx] = useState(0);
     const [tripRequestStatus, setTripRequestStatus] = useState(0);
+
     
     const images = ['..//assets/TahoeTrip/FullArea.jpg',
     '..//assets/TahoeTrip/FullArea.jpg',
@@ -44,6 +46,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
     '..//assets/TahoeTrip/Single.jpg',
     '..//assets/TahoeTrip/King.jpg',
     '..//assets/TahoeTrip/Bunks.jpg']
+
 
     return (
         <Segment.Group>
@@ -58,7 +61,7 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                             </Item.Content>
                       
             </Segment>
-            <Segment>
+            <Segment >
                 <Image size='huge' src={`..//assets/TahoeTrip/FullArea.jpg`} onClick={()=>setPhotosOpen(true)} fluid style={tripImageStyle}/>
                  {photosOpen && <Lightbox
                     mainSrc={images[photoIdx]}
@@ -68,7 +71,18 @@ export default observer (function TripDetailedHeader({trip}: Props) {
                     onMovePrevRequest={() => setPhotoIdx((photoIdx - 1) % images.length)}
                     onMoveNextRequest={() => setPhotoIdx((photoIdx + 1) % images.length)}
                     />}
-
+            {/* <Grid verticalAlign='middle' >
+            <Grid.Column width={15} style={{height:'480px', paddingTop:'0px'}}>
+               <div className="airbnb-embed-frame" data-id="761467507838681301" data-view="home">
+                    <a href="https://www.airbnb.com/rooms/761467507838681301?guests=1&amp;adults=1&amp;s=66&amp;source=embed_widget">View On Airbnb</a>
+                    <a href="https://www.airbnb.com/rooms/761467507838681301?guests=1&amp;adults=1&amp;s=66&amp;source=embed_widget" rel="nofollow">3bdrm condo 5 min to heavenly!</a>
+                    {useScript("https://www.airbnb.com/embeddable/airbnb_jssdk")}
+               </div>
+               </Grid.Column>
+            </Grid>  */}
+            </Segment>
+            <Segment attached>
+                <Button href='https://www.airbnb.com/rooms/761467507838681301?source_impression_id=p3_1673392308_rixrQPL2OLsgPgnB' style={{backgroundColor:'#ff385c', color:'white'}}>View On Airbnb</Button>
             </Segment>
             
         </Segment.Group>

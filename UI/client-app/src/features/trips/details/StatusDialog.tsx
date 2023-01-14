@@ -21,7 +21,7 @@ return(
     <Message color='green'>
         <Message.Header>Reservation Request Accepted!</Message.Header>
             <p>
-                Congrats! Your request has been accepted. However, <b>Your spot is not confirmed until your payment has been complete</b> Complete your payment to lock in your reservation! 
+               <b>Your spot is not confirmed until your payment has been complete</b> Complete your payment of <b>${reservationStore.userReservation.cost}.00</b> via Venmo to lock in your reservation! 
             </p>
     </Message>
     : null

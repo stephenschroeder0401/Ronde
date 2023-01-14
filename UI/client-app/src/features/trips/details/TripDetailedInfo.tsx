@@ -3,6 +3,7 @@ import React from 'react'
 import {Segment, Grid, Icon, Header} from 'semantic-ui-react'
 import {Trip} from "../../../app/models/trip";
 import {format} from "date-fns";
+import useScript from './useScript';
 
 interface Props {
     trip: Trip
@@ -15,7 +16,7 @@ export default observer(function TripDetailedInfo({trip}: Props) {
         <Segment.Group>
             <Segment attached>
                  <Grid verticalAlign='middle'>
-                    <Grid.Column width={9}>
+                    <Grid.Column width={4}>
                     <Header
                       size='medium'
                       content="DEETS"
@@ -25,7 +26,7 @@ export default observer(function TripDetailedInfo({trip}: Props) {
                     <Grid.Column width={1}>
                         <Icon name='marker' size='large' color='teal'/>
                     </Grid.Column>
-                    <Grid.Column width={5}>
+                    <Grid.Column width={10}>
                         <span>{trip.city}</span>
                     </Grid.Column>
                 </Grid>
@@ -36,7 +37,7 @@ export default observer(function TripDetailedInfo({trip}: Props) {
                         <span>{tripDescription}</span>
                     </Grid.Column>
                 </Grid>
-            </Segment>
+            </Segment>  
         </Segment.Group>
     )
 })

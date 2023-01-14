@@ -11,6 +11,7 @@ import { useStore } from '../../../app/stores/store';
 import { runInAction } from 'mobx';
 import { Link, NavLink } from 'react-router-dom';
 import AttendanceModal from '../../../app/common/modals/attendanceModal';
+import StatusDialog from './StatusDialog';
 
 
 
@@ -44,7 +45,7 @@ export default observer(function TripSubmit({trip} : Props) {
             break;
         case 2:
             setModalHeader("Complete Payment");
-            setModalBody(`Please complete your payment of $${reservationStore.userReservation.cost}.00 via Venmo to @Stephen-Schroeder-3. Last 4 digits of phone number: 9113`);
+            setModalBody(`Please complete your payment of $${reservationStore.userReservation.cost}.00 via Venmo to Stephen Schroeder. Last 4 digits of phone number: 9113`);
         }
 
         setTripRequestStatus(requestStatus);
@@ -110,9 +111,10 @@ export default observer(function TripSubmit({trip} : Props) {
   
 
     return (
-        <Segment.Group style={{position:'sticky', top:'30px', zIndex: 100}}>
+        <Segment.Group style={{position:'sticky', top:'30px', zIndex: 100} }>
             <AttendanceModal body={modalBody} header={modalHeader} isOpen={modalOpen} confirm={() => confirmAttendance()} closeModal={()=> setModalOpen(false)}/>
             <Segment>
+                <StatusDialog/>
                 <Grid >
                 <Grid.Column width={16}>
                 <Menu.Header
@@ -153,7 +155,7 @@ export default observer(function TripSubmit({trip} : Props) {
                 ) 
                 : reservationStore.userReservation.reservationStatusId == 2 ? (
                     <>
-                    <Button loading={loading} color='blue' onClick={() =>handleAttendance(2)}>Complete Payment</Button>
+                        <Button loading={loading} color='blue' href="https://account.venmo.com/u/stephen-schroeder-3" onClick={() =>setTripRequestStatus(2)}>Complete Payment</Button>
                     </>
                 )
                 : reservationStore.userReservation.reservationStatusId == 4 ?(
