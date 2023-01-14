@@ -12,7 +12,8 @@ export default class ReservationStore{
         stints: [],
         cost: 0,
         reservationStatusId: 0,
-        userName: ''
+        userName: '',
+        fullName: ''
     };
 
 

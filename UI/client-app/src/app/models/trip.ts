@@ -86,6 +86,7 @@ export interface Reservation{
     cost: number ;
     reservationStatusId: number;   
     userName: String | undefined;
+    fullName: String | undefined;
 }
 
 export class Reservation implements Reservation {

@@ -22,7 +22,8 @@ namespace Application.Core
                     .FirstOrDefault(x => x.IsHost).AppUser.UserName));
 
             CreateMap<Reservation, ReservationDto>()
-                   .ForMember(d => d.UserName, o => o.MapFrom(r => r.AppUser.UserName));
+                   .ForMember(d => d.UserName, o => o.MapFrom(r => r.AppUser.UserName))
+                   .ForMember(d => d.FullName, o => o.MapFrom(r => r.AppUser.Bio));
 
             CreateMap<TripAttendee, AttendeeDto>()
                 .ForMember(d => d.UserId, o => o.MapFrom(s => s.AppUser.Id))

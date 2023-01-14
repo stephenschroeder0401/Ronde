@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react'
-import {Segment, Grid, Icon, Header, Menu, Item, Label, Checkbox, Image} from 'semantic-ui-react'
+import {Segment, Grid, Icon, Header, Menu, Item, Label, Checkbox, Image, GridColumn} from 'semantic-ui-react'
 import {Reservation, Trip} from "../../../app/models/trip";
 import {format} from "date-fns";
 import { string } from 'yup/lib/locale';
@@ -18,8 +18,18 @@ interface Props {
 
 export default observer(function TripSelection({trip : {spots, host, stints, prices}} : Props) {
 
-    const {reservationStore} = useStore();
+    const {reservationStore, tripStore} = useStore();
     const [selectedSpot, setSelectedSpot] = useState(reservationStore.userReservation.spotId);
+
+    const getConfirmedGuests = (spotId : string) =>{
+        let currStints = reservationStore.userReservation.stintIds;
+        let confirmed = tripStore.selectedTrip?.reservations?.filter(r => r.reservationStatusId == 4 && r.spotId == spotId && currStints.filter(cr => r.stintIds.includes(cr)).length > 0);
+
+        if(confirmed && confirmed?.length > 0) 
+            return confirmed?.map(c => c.fullName);
+        
+        else return undefined;
+        }
 
 
     useEffect(() => {
@@ -55,18 +65,33 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
                     style={{color: '#5A5A5A'}}/>
                  <Menu vertical style={{width:'100%'}}>
                     {spots!.map(spot => {
+                        const confirmedGuests = getConfirmedGuests(String(spot.id));
                         return(
-                        <Menu.Item disabled={reservationStore.userReservation.reservationStatusId > 0} onClick={() => {setSelectedSpot(String(spot.id))}}
+                        <Menu.Item disabled={reservationStore.userReservation.reservationStatusId > 0 || confirmedGuests != undefined} onClick={() => {setSelectedSpot(String(spot.id))}}
                             active={selectedSpot == String(spot.id)}
                             name={String(spot.id)}>
                             <Grid>
                             <Grid.Column width={10}>
-                            <Header size='medium'>
-                                {spot.title}
-                            </Header>
+                            <span style={{marginBottom:'0.2em'}}>
+                                <h3>{spot.title}</h3>
+                            </span>
                             <span style={{marginBottom:'0.2em'}}>
                                 {spot.description}
                             </span>
+                            {confirmedGuests != undefined ?
+                            (
+                                <>
+                                <Header size='tiny' style={{marginTop:'0.7em', marginBottom:'0.2em'}}>Reserved:</Header>
+                                {confirmedGuests.map(g => {
+                                    return(
+                                    <Label size="tiny" color='blue' style={{marginBottom:'0.2em'}}>
+                                        {g}
+                                    </Label>);
+                                })
+                                }
+                                </>
+                                ) : <></>
+                            }
                             </Grid.Column>
                             <Grid.Column width={6}>
                                 <Image style={{marginTop:'0.5em'}}  size='small' src={spot.img}/>
