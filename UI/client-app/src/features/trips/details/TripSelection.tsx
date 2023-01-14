@@ -25,8 +25,19 @@ export default observer(function TripSelection({trip : {spots, host, stints, pri
         let currStints = reservationStore.userReservation.stintIds;
         let confirmed = tripStore.selectedTrip?.reservations?.filter(r => r.reservationStatusId == 4 && r.spotId == spotId && currStints.filter(cr => r.stintIds.includes(cr)).length > 0);
 
-        if(confirmed && confirmed?.length > 0) 
+
+        let res = {...reservationStore.userReservation};
+
+        if(confirmed && confirmed?.length > 0){
+            confirmed.map(c => {
+                if (c.spotId == res.spotId){
+                    res.spotId = '0';
+                    res.cost = 0;
+                    reservationStore.setReservation(res);
+                }})
+            
             return confirmed?.map(c => c.fullName);
+        }
         
         else return undefined;
         }

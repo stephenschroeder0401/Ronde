@@ -10,9 +10,9 @@ import RegisterForm from '../users/RegisterForm';
 export default observer(function HomePage(){
   const {userStore, modalStore} = useStore();
     return (
-      <Segment inverted textAlign='center' vertical className='masthead'>
-        <Grid>
-          <Grid.Column width={16}>
+      <Segment inverted textAlign='center' vertical className='masthead' style={{justifyContent:'center'}}>
+        <Grid >
+          <Grid.Column width={16} >
           <Container text>
             <Header as='h1' inverted>
                 <Image size='massive' src='../assets/logo.png' alt='logo' style={{marginBottom: 12}}/>
