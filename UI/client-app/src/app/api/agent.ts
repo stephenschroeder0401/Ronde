@@ -13,7 +13,7 @@ const sleep = (delay: number) =>{
     })
 }
 
-axios.defaults.baseURL = 'https://rondeapi.azurewebsites.net';
+axios.defaults.baseURL = 'https://localhost:44323';
 
 axios.interceptors.request.use(config =>{
     const token = store.commonStore.token;

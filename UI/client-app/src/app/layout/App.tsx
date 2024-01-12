@@ -44,12 +44,14 @@ function App() {
             <NavBar/>
              <Container style={{marginTop: '5em'}}> 
                <Switch>
-                  <Route path='/trips' exact component={TripDashboard}/>
+                  {/* <Route path='/trips' exact component={TripDashboard}/> */}
+                  
                   <Route path='/trips/:id' component={TripDetails}/>
-                  <Route key={location.key} path={['/createtrip', '/manage/:id']} component={TripForm}/>
-                  <Route path='/profiles/:username' component={ProfilePage}/>
-                  <Route path='/errors' component={TestErrors}/>
-                  <Route path='/server-error' component={ServerError}/>
+                  <Route path='/trips'  component={TripDetails}/>
+                  {/* <Route key={location.key} path={['/createtrip', '/manage/:id']} component={TripForm}/> */}
+                  {/* <Route path='/profiles/:username' component={ProfilePage}/> */}
+                  {/* <Route path='/errors' component={TestErrors}/> */}
+                  {/* <Route path='/server-error' component={ServerError}/> */}
                   <Route path='/login' component={LoginForm}/>
                   <Route component={NotFound}></Route>
                </Switch>

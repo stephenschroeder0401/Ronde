@@ -11,7 +11,7 @@ namespace API.DTOs
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        [RegularExpression("^.*(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,12}$", ErrorMessage = "Password does not meet requirements")]
+        [RegularExpression("^.{4,20}$", ErrorMessage = "Password must be between 4 and 20 characters")]
         public string Password { get; set; }
 
         public string Username { get; set; }

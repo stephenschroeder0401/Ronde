@@ -11,6 +11,7 @@ using FluentValidation.AspNetCore;
 using API.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace API
 {
@@ -33,10 +34,14 @@ namespace API
             }).AddFluentValidation(config => {
                 config.RegisterValidatorsFromAssemblyContaining<TripCommandHandler>();
             });
-            
+
+
             services.AddApplicationServices(_configuration);
 
             services.AddIdentityServices(_configuration);
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -23,7 +23,8 @@ export default observer(function TripDetails (this: any, {} : Props) {
   const {id} = useParams<{id: string}>();
 
   useEffect(() =>{
-    if(id) loadTrip(+id);
+    //if(id)   
+    loadTrip(1);
   }, [id, loadTrip])
 
   
@@ -37,9 +38,9 @@ export default observer(function TripDetails (this: any, {} : Props) {
         <TripDetailedInfo trip={trip} />
         <TripSelection  trip={trip} />
       </Grid.Column>
-      {/* <Grid.Column width={5}>
+      <Grid.Column width={5}>
         <TripDetailedSidebar trip={trip}/>
-      </Grid.Column> */}
+      </Grid.Column> *
     </Grid>
   );
 })

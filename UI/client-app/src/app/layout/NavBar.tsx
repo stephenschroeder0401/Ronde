@@ -11,14 +11,13 @@ export default observer(function NavBar(){
        <Menu inverted fixed='top' style={{height: "10px"}}>
             <Container>
                <Menu.Item as={NavLink} to='/' exact header>
-                    <img src="/assets/logo.png" alt="logo" style={{marginRight: '10px'}}></img>
                     Ronde
                </Menu.Item>              
                <Menu.Item position='right'>
                    <Image src={user?.image || '/assets/user.png'} avatar spaced='right'/>
-                   <Dropdown pointing='top left' text={user?.displayName}>
+                   <Dropdown pointing='top right' text={user?.displayName}>
                        <DropdownMenu>
-                        <Dropdown.Item as={Link} to ={`/profiles/${user?.userName}`} text='My Profile' icon='user'/>
+                        {/* <Dropdown.Item as={Link} to ={`/profiles/${user?.userName}`} text='My Profile' icon='user'/> */}
                         <Dropdown.Item onClick={logout} text='Log out' icon='power'/>
                         </DropdownMenu>
                    </Dropdown>

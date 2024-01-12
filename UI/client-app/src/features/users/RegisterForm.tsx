@@ -10,7 +10,7 @@ import ValidationErrors from '../errors/ValidationErrors';
 export default observer(function RegisterForm(){
 
     const {userStore} = useStore();
-    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    const phoneRegExp = /^\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$/
 
     return (
         <Formik

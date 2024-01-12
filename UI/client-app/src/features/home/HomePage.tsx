@@ -15,7 +15,6 @@ export default observer(function HomePage(){
           <Grid.Column width={16} >
           <Container text>
             <Header as='h1' inverted>
-                <Image size='massive' src='../assets/logo.png' alt='logo' style={{marginBottom: 12}}/>
                     Ronde
             </Header>
             {userStore.isLoggedIn ? (

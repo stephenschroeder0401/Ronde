@@ -27,6 +27,7 @@ namespace API.Extensions
             .AddEntityFrameworkStores<RondeContext>()
             .AddSignInManager<SignInManager<AppUser>>();
 
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -47,6 +48,15 @@ namespace API.Extensions
                 {
                     policy.Requirements.Add(new IsHostRequirement());
                 });
+            });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 4;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
             });
 
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
